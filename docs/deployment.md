@@ -2,7 +2,7 @@
 
 ## Recursos existentes
 
-- GitHub: https://github.com/patrickfcf/presente-de-alegria-relatorios
+- GitHub: https://github.com/patrickfcf/presentedealegria-app
 - Supabase: projeto **Presente de Alegria**, referência `rzlopgtfuutnuceaoroh`, São Paulo, organização Patrick Fonseca.
 - SQL e Edge Functions `admin` e `submit-report` implantados; testes de RLS em transação revertida executados.
 - Cloudflare Pages: **ainda não conectado**. O navegador de trabalho foi bloqueado pela verificação anti-bot do dashboard. Nenhum plano pago habilitado.
@@ -10,8 +10,8 @@
 ## Cloudflare Pages com GitHub
 
 1. Em https://dash.cloudflare.com/, abra a conta desejada → **Workers & Pages** → **Create application** → **Pages** → **Import an existing Git repository**. A nomenclatura pode variar com a interface; escolha Pages com integração Git, não upload manual.
-2. Se necessário, autorize a aplicação GitHub Cloudflare apenas para `patrickfcf/presente-de-alegria-relatorios`.
-3. Nome do projeto: `presente-de-alegria-relatorios`; branch de produção: `main`.
+2. Se necessário, autorize a aplicação GitHub Cloudflare apenas para `patrickfcf/presentedealegria-app`.
+3. Nome sugerido do projeto: `presentedealegria-app` (sujeito a disponibilidade); branch de produção: `main`.
 4. Framework: **Vite** ou **None**; comando de build: `npm run build`; saída: `dist`; diretório raiz: repositório.
 5. Variável de build `NODE_VERSION`: `24`.
 6. Variáveis do aplicativo:
@@ -24,7 +24,9 @@
 
 A chave Publishable pode estar no frontend; **nunca usar Secret ou service_role**. Não copiar senhas/tokens para conversas, README ou GitHub.
 
-7. Fazer o primeiro deploy. Se a URL final ainda não era conhecida, preencher `VITE_PRODUCTION_URL` e refazer o deploy. O QR de `#/instalar` passa a apontar para essa URL.
+7. Fazer o primeiro deploy com **Save and Deploy**. Se não souber a URL final, deixe `VITE_PRODUCTION_URL` ausente no primeiro build; não invente uma URL. Se a URL final ainda não era conhecida, preencher `VITE_PRODUCTION_URL` e refazer o deploy. O QR de `#/instalar` passa a apontar para essa URL.
+   Para ajustar depois: abra o projeto Pages → **Settings → Variables and Secrets** (ou **Environment variables**, conforme a interface), selecione **Production**, salve `VITE_PRODUCTION_URL` e refaça o deploy pela aba **Deployments**. Variáveis `VITE_*` entram no build; salvar sozinho não atualiza o site.
+
 8. Confirmar builds automáticos em pushes de `main`. Build sem variáveis mostra uma página de preparação, nunca dados fictícios como se fossem reais.
 9. Conferir headers de `public/_headers`, HTTPS, `/manifest.webmanifest`, `/sw.js` e `/icons/*`.
 
@@ -77,3 +79,10 @@ Deploy das funções inclui arquivos `shared/`, `_shared/http.ts` e import map `
 - QR Code deve abrir a URL final. Modo offline deve mostrar indisponibilidade e jamais fingir que um relatório foi enviado.
 
 `npm test` cobre lógica, PDF e fluxo de componentes. `supabase/tests-security.sql` cobre permissões reais com fixtures revertidas. Essas verificações não substituem o aceite de instalação e autenticação em produção.
+
+## Referências oficiais
+
+- [React no Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/)
+- [Integração Git](https://developers.cloudflare.com/pages/get-started/git-integration/)
+
+Renomear o repositório não muda o identificador do projeto Supabase. Clones existentes podem atualizar o remoto com `git remote set-url origin https://github.com/patrickfcf/presentedealegria-app.git`.

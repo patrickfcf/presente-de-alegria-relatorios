@@ -12,6 +12,8 @@
 - PWA, ícones oficiais, instruções, QR condicionado à URL final e cache apenas de assets públicos.
 - README, guias de administração/deploy/segurança, testes de lógica, interface, servidor e PDF.
 
+- Repositório renomeado para `presentedealegria-app`; README com badges, MIT para código, guias CONTRIBUTING/SECURITY, AGENTS e três skills locais versionadas.
+
 ## Verificado
 
 - TypeScript e build de produção.
