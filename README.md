@@ -133,3 +133,5 @@ Guardar a credencial Resend somente no SMTP do Supabase e no gerenciador de segr
 ## Mudanças por pull request
 
 Criar branch → abrir PR → checks verdes → revisão do mantenedor → Squash and merge → deploy Pages. A proteção de `main` exige o check `verify`. O CI não tem segredos de produção. Dependabot abre propostas de atualização; agentes seguem [AGENTS.md](AGENTS.md). Leia a [política completa](docs/contributing-workflow.md).
+
+O aplicativo acompanha automaticamente o modo claro ou escuro do dispositivo. Detalhes da paleta e roteiro de verificação em [design.md](design.md#tema-automático).
