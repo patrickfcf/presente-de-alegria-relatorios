@@ -22,6 +22,19 @@ export function safePublicUrl(value: string): boolean {
     return false;
   }
 }
+export function eventContactUrl(value: string, event: { title: string; starts_at: string }): string {
+  if (!safePublicUrl(value)) return value;
+  const url = new URL(value);
+  const direct = url.hostname === "wa.me" && /^\/\d+\/?$/.test(url.pathname);
+  const send = ["api.whatsapp.com", "web.whatsapp.com"].includes(url.hostname)
+    && url.pathname === "/send" && /^\d+$/.test(url.searchParams.get("phone") || "");
+  if (!direct && !send) return value;
+  const start = new Date(event.starts_at);
+  if (Number.isNaN(start.getTime())) return value;
+  const date = start.toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric" });
+  url.searchParams.set("text", `Olá! Vi o evento “${event.title}”, do dia ${date}, no aplicativo do Presente de Alegria e gostaria de saber mais informações sobre como participar. Pode me ajudar?`);
+  return url.toString();
+}
 export function validateDetails(
   kind: PublicationKind,
   input: unknown,

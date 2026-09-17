@@ -3,6 +3,7 @@ import type { Campaign, Event, News } from "../../shared/report";
 import { todayBR } from "../../shared/report";
 import {
   safePublicUrl,
+  eventContactUrl,
   categories,
   type PublicationDetails,
 } from "../../shared/publications";
@@ -182,7 +183,7 @@ export function EventsFeed({
             </p>
             {e.details?.summary && <p className="intro">{e.details.summary}</p>}
             <p className="preserve-lines">{e.description}</p>
-            <PublicationLinks details={e.details} />
+            <PublicationLinks details={e.details} event={e} />
           </article>
         ))
       ) : (
@@ -200,9 +201,11 @@ export function EventsFeed({
 
 export function PublicationLinks({
   details,
+  event,
   disabled = false,
 }: {
   details?: PublicationDetails;
+  event?: Pick<Event, "title" | "starts_at">;
   disabled?: boolean;
 }) {
   if (!details || disabled) return null;
@@ -213,7 +216,7 @@ export function PublicationLinks({
         safePublicUrl(details.contact_url) && (
           <a
             className="secondary"
-            href={details.contact_url}
+            href={event ? eventContactUrl(details.contact_url, event) : details.contact_url}
             target="_blank"
             rel="noopener noreferrer"
           >

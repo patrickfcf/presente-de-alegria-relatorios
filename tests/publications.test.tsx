@@ -119,3 +119,17 @@ it("filters news by publication month and keeps scheduled news private", () => {
   expect(screen.getAllByRole("article")).toHaveLength(1);
   expect(screen.queryByText("Agendada")).not.toBeInTheDocument();
 });
+
+it("prefills event WhatsApp links using the Brasília date and preserves the contact", async () => {
+  const { eventContactUrl } = await import('../shared/publications');
+  const event = { title: 'Encontro & Alegria', starts_at: '2026-10-18T01:00:00Z' };
+  const result = new URL(eventContactUrl('https://wa.me/5511000000000?text=antigo', event));
+  expect(result.pathname).toBe('/5511000000000');
+  expect(result.searchParams.get('text')).toBe('Olá! Vi o evento “Encontro & Alegria”, do dia 17/10/2026, no aplicativo do Presente de Alegria e gostaria de saber mais informações sobre como participar. Pode me ajudar?');
+  const api = new URL(eventContactUrl('https://api.whatsapp.com/send?phone=5511000000000', event));
+  expect(api.searchParams.get('phone')).toBe('5511000000000');
+  expect(api.searchParams.get('text')).toBe(result.searchParams.get('text'));
+  for (const url of ['https://example.org/contato', 'https://chat.whatsapp.com/exemplo', 'https://wa.me.evil.invalid/5511000000000']) {
+    expect(eventContactUrl(url, event)).toBe(url);
+  }
+});
