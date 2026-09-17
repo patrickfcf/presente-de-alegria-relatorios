@@ -1,18 +1,30 @@
-# Segurança planejada / gates de produção
+# Revisão de segurança
 
-Ainda não revisado em um banco implantado. Este documento não representa aprovação de segurança.
+Revisão técnica em 17/09/2026. Não representa certificação legal ou garantia de ausência de falhas.
 
-- RLS em toda tabela exposta. Usuários sem perfil ativo não leem nem escrevem dados.
-- Papel administrativo não vem de user_metadata nem de valor enviado pelo cliente.
-- Coordenador acessa somente células com vínculo ativo; teste também após desativação com token já emitido.
-- Storage privado; acesso condicionado ao relatório e ao vínculo, sem listagem pública. Download autenticado preferido; links assinados, se usados, com expiração curta.
-- Funções administrativas verificam usuário e papel antes de usar service role. Segredos somente no ambiente Supabase.
-- Tabelas de relatórios enviados sem UPDATE/DELETE direto pelo cliente. Corrigir com histórico.
-- Não incluir dados reais em repositório público, screenshots de CI, logs, fixtures ou analytics.
-- Cabeçalhos de segurança e CSP compatível com Supabase; nenhuma dependência de trackers.
-- Cache do service worker limitado a shell/assets. CPF e assinatura ficam apenas em memória até envio; rascunhos não sensíveis com expiração.
-- Nome do profissional e assinatura necessários ao relatório; CPF opcional até confirmação da finalidade. Sem dados identificáveis de pacientes.
-- ONG deve definir contato de privacidade, acesso administrativo, prazo de retenção e descarte antes do lançamento. Não inventar prazo legal nem executar exclusão automaticamente.
-- Testar isolamento de duas células, conta inativa, usuário anônimo, tentativa de autopromoção e objetos Storage de outra célula.
-- Registrar falhas operacionais com UUID/código, sem conteúdo de formulários ou tokens.
-- Exportações mensais são privadas e iniciadas por administrador autenticado.
+## Implementado e verificado
+
+- RLS em todas as tabelas expostas; clientes têm somente SELECT. Toda escrita de negócio passa pelas funções autenticadas.
+- Papéis e situação vêm de `profiles`, nunca de `user_metadata`, seleção de tela ou payload do cliente.
+- Coordenadores leem documentos apenas de suas células. Voluntários e Comunicação não leem relatórios, presença, CPF ou assinaturas.
+- Desativação consultada a cada operação e leitura de dados; não depende de renovar o JWT.
+- Diretoria não pode publicar; Comunicação não pode cadastrar usuários. Promoção/substituição exige administrador ou diretor da equipe.
+- Storage privado e política vinculada ao arquivo exato de relatório enviado; uploads e exclusões somente no servidor.
+- Funções privilegiadas SQL são SECURITY INVOKER, com EXECUTE revogado de PUBLIC/anon/authenticated. Helpers de leitura SECURITY DEFINER ficam no esquema não exposto `private`, com search_path vazio e usuário autenticado obrigatório.
+- Limites de corpo, arquivo, resolução e páginas. Tipo reconhecido pelos bytes; PDF gerado no servidor. PDFs anexados não são considerados validação criptográfica da assinatura.
+- Estado processing/failed/submitted, prevenção de duplicação, concessão exclusiva e preservação dos arquivos em caso de confirmação de envio perdida.
+- Sem credenciais de serviço no cliente, rastreadores ou conteúdo pessoal em logs; cabeçalhos CSP, anti-frame e no-referrer preparados para Cloudflare.
+- Cache do service worker limitado a assets públicos. Rascunho local sem dados pessoais do profissional, assinatura, anexos ou chamada.
+
+`supabase/tests-security.sql` passou no banco remoto usando dados sintéticos em transação revertida: isolamento de células/arquivos, cinco papéis, desativação com identidade existente, bloqueio de escrita direta/RPC, retry idempotente, duplicação, rejeição de lease nulo, troca da própria equipe e preservação do histórico.
+
+Supabase Security Advisor: sem alertas WARNING/ERROR. Há INFO em `private.audit_events` por RLS sem política, intencional: nenhum cliente lê a auditoria; somente servidor. Referência: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy
+
+## Limites e pendências de lançamento
+
+- Configurar SMTP, template OTP, desativar signup público e testar um login real.
+- Testar integração completa em produção com contas de teste, inclusive JWT do projeto, PDF baixado, assinatura touch e instalação iOS/Android.
+- Definir retenção, contato de privacidade, correções administrativas e recuperação de backup com a ONG.
+- Conteúdo de anexos não passa por antivírus/OCR; usuários autorizados devem conferir origem e legibilidade. Nenhum anexo é renderizado como HTML no aplicativo.
+- Operações usam perfil ativo além de Auth. Revogação de sessão no provedor não necessariamente invalida imediatamente JWT já emitido; para bloqueio imediato de dados, desativar o perfil.
+- Exclusão de acesso preserva dados históricos. Pedidos de descarte devem seguir procedimento próprio e finalidade documental definida pela ONG.

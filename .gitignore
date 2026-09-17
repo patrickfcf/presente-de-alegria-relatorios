@@ -11,3 +11,5 @@ supabase/.temp/
 reports/
 private/
 .DS_Store
+
+tmp/

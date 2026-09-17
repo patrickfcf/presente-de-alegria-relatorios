@@ -1,0 +1,51 @@
+# Administração do aplicativo
+
+Todos os perfis representam voluntários; o perfil controla responsabilidades e acesso.
+
+| Perfil | Pessoas | Relatórios | Publicações |
+|---|---|---|---|
+| Administrador | Cria/edita os outros quatro perfis; reenvia acesso; exclui acesso; vincula responsáveis e células | Todas as células, downloads e indicadores | Controle administrativo completo |
+| Diretor | Cria/edita seus coordenadores; consulta voluntários; substitui coordenador por voluntário da própria equipe | Consulta geral, pendências e comparações | Apenas leitura das publicações disponíveis |
+| Coordenador | Cria/edita/desativa e reenvia acesso de seus voluntários | Envia e consulta relatórios das células autorizadas; registra presença | Apenas leitura |
+| Voluntário individual | Próprio perfil, sem edição de permissões | Sem acesso | Eventos e calendário |
+| Comunicação e Eventos | Sem gestão de pessoas | Sem acesso a documentos, CPF ou assinatura | Cria/edita/publica/arquiva notícias e eventos |
+
+Escolher uma opção na tela inicial não altera o perfil. A permissão é sempre consultada no banco.
+
+## Começar
+
+1. Administrador cadastra instituições e células, usando a lista oficial da ONG.
+2. Cadastra diretores e a equipe de Comunicação e Eventos.
+3. Administrador ou diretor cadastra coordenador: nome, e-mail, nome de palhaço, celular, diretor responsável e célula.
+4. Coordenador cadastra voluntários em **Minha equipe**. A célula é herdada do coordenador.
+5. O cadastro envia um código por e-mail. Depois, cada pessoa solicita novo código em **Receber código**.
+
+Não compartilhe códigos nem senhas. O reenvio de acesso envia um novo OTP e não encerra sessões existentes. Para bloquear alguém, desative o cadastro: os dados ficam inacessíveis mesmo com um token ainda válido.
+
+## Trocar a coordenação
+
+Administrador ou diretor da equipe escolhe **Substituir coordenador**, seleciona um voluntário ativo da mesma equipe e confirma. O voluntário assume a coordenação e os vínculos; o coordenador anterior passa a voluntário. Os relatórios e nomes históricos permanecem como registrados.
+
+Antes de desativar/excluir um responsável, reatribua os subordinados. **Excluir acesso** bloqueia o perfil e remove o acesso de autenticação, mantendo referências necessárias aos relatórios e à auditoria. Não é um comando de descarte de todos os dados pessoais.
+
+## Registrar a visita
+
+Uma visita é esperada por célula em cada mês ativo. A data efetiva vem do formulário, não do dia em que ele é enviado; isso permite registros retroativos desde o início de atividade da célula.
+
+O coordenador registra cada voluntário ativo de sua equipe: presente, falta com justificativa válida ou falta sem justificativa válida. Não coletamos textos de justificativa, diagnósticos nem documentos médicos. A chamada usa a equipe vinculada no momento do envio; alterações retroativas de composição precisam de conferência administrativa.
+
+Nome, função, CPF e assinatura do formulário são do profissional da instituição. O coordenador aparece como responsável pelo envio. Quantidades desconhecidas ficam vazias; zero significa nenhum. CPF e função são opcionais. O total incompleto é apresentado como subtotal, sem inventar dados.
+
+Use assinatura na tela ou anexe a folha assinada. Arquivos: até três, 5 MB cada, PDF/JPG/PNG, até 20 páginas combinadas; fotos HEIC devem ser convertidas para JPG. O documento enviado deve estar legível e assinado. O sistema não verifica autenticidade de uma assinatura desenhada nem oferece certificação ICP-Brasil.
+
+A chamada é interna; o PDF institucional segue o modelo de visita e não lista ausências de voluntários. Relatórios enviados são imutáveis na interface. Correções administrativas devem manter registro da versão original e do motivo; não editar o banco informalmente.
+
+## Notícias e eventos
+
+A Comunicação abre **Publicações**. Notícias têm título, texto e data; eventos têm título, descrição, local, início e término opcional. Horários são de Brasília. Notícias futuras são mostradas na data programada. Eventos publicados aparecem imediatamente, mesmo que ocorram no futuro. Rascunhos/arquivados são visíveis apenas a Comunicação e administradores.
+
+## Privacidade e manutenção
+
+A ONG deve definir contato de privacidade, prazo de retenção e procedimento de correção/descarte antes da operação. O aplicativo não apaga relatórios automaticamente. Downloads em aparelhos ficam sob responsabilidade de quem os baixou. Não use aparelhos compartilhados sem sair da conta.
+
+Revisar usuários inativos regularmente; guardar exportações privadas com acesso restrito; testar restauração de backup conforme o plano contratado. Não habilitar planos pagos sem decisão explícita da ONG. Não compartilhar relatórios, CPFs, assinaturas ou exportações no GitHub.

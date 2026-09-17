@@ -1,1 +1,141 @@
-:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#2d1d54;background:#faf8fc;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;font-weight:400;line-height:1.6}*{box-sizing:border-box}body{margin:0;min-width:320px}button,input,select{font:inherit}button{cursor:pointer}a{color:#6437d1}:focus-visible{outline:3px solid #6437d1;outline-offset:5px}p{color:#554d65}h1,h2,h3,p{margin-top:0}button{min-height:48px}button:disabled{cursor:wait}::selection{background:#e8dbff}
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: #2d1d54;
+  background: #faf8fc;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+  line-height: 1.6;
+  color-scheme: light;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+a {
+  color: #6437d1;
+}
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+:focus-visible {
+  outline: 3px solid #6437d1;
+  outline-offset: 4px;
+}
+p {
+  color: #554d65;
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1:focus,
+main:focus {
+  outline: none;
+}
+button {
+  min-height: 48px;
+}
+::selection {
+  background: #e8dbff;
+}
+input,
+select,
+textarea {
+  width: 100%;
+  font-size: 16px;
+  background: #fff;
+  color: #2d1d54;
+  border: 1px solid #bfb5cf;
+  border-radius: 10px;
+  padding: 12px 14px;
+  min-height: 48px;
+  line-height: 1.4;
+}
+input:disabled {
+  background: #f3f0f6;
+  color: #685f77;
+}
+input[aria-invalid="true"] {
+  border: 2px solid #b52d37;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  accent-color: #6437d1;
+  flex-shrink: 0;
+  margin: 0;
+}
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 650;
+  margin: 0 0 20px;
+}
+label > input,
+label > select,
+label > textarea {
+  display: block;
+  margin-top: 8px;
+}
+hr {
+  border: 0;
+  border-top: 1px solid #e8e1ee;
+  margin: 28px 0;
+}
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+strong {
+  font-weight: 700;
+}
+a,
+button {
+  touch-action: manipulation;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
