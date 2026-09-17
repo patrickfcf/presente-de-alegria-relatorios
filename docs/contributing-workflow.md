@@ -23,6 +23,21 @@ CI em runners hospedados pelo GitHub, com token somente leitura, checkout sem cr
 
 `verify` agrega formatação, lint, testes, build, auditoria de dependências de runtime e testes SQL em Supabase descartável. Um job com falha ou cancelado impede o gate. Dependabot propõe atualizações semanais; não há auto-merge. Novos agentes devem respeitar AGENTS.md e não podem aprovar o próprio trabalho nem alterar permissões por conta própria.
 
+## Atualizações de dependências
+
+Dependabot verifica semanalmente e mantém até três PRs de versões npm e um de GitHub Actions abertos. Atualizações de segurança têm limite separado gerenciado pelo GitHub; esses limites não são uma promessa de no máximo quatro PRs no total.
+
+- `react` reúne React, React DOM e os dois pacotes de tipos, inclusive em mudanças de versão principal. Devem ser testados juntos; nunca integrar somente metade da atualização.
+- `development-tools` reúne atualizações menores e correções de ferramentas, excluindo os tipos do React.
+- `runtime` reúne atualizações menores e correções das demais dependências de produção.
+- `github-actions` reúne as Actions; revisar notas de versões principais, permissões e SHAs antes do merge.
+- `@types/node` permanece na linha 24, correspondente ao runtime do projeto. Versões 25 ou superiores são ignoradas até uma migração coordenada do Node.
+- Outras versões principais, como TypeScript 7, continuam em PRs separados e exigem revisão de compatibilidade. Check verde não substitui revisão.
+
+As regras passam a valer depois do merge desta configuração na `main` e da execução do Dependabot. PRs antigos podem permanecer abertos durante a reorganização: confira os substitutos antes de encerrar os anteriores. Não integrar os PRs individuais de React #7/#8; aguardar o grupo conjunto. O PR #6 de tipos do Node 26 não corresponde ao runtime atual.
+
+Não há auto-merge. Cada PR deve passar por `verify`, revisão do diff e autorização do mantenedor. Consulte a [referência oficial do Dependabot](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference).
+
 ## Revisão de acessos
 
 Mensalmente e ao sair alguém: revisar Collaborators, GitHub Apps, deploy keys, Secrets/Environments, membros do Cloudflare e Supabase, e chaves Resend. Conceder o mínimo necessário e remover acessos desnecessários mediante autorização. CI testa autorização do aplicativo; não audita automaticamente as contas externas.
