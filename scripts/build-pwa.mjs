@@ -6,9 +6,7 @@ const files = [
   "/index.html",
   "/logo.png",
   "/manifest.webmanifest",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
-  "/icons/apple-touch-icon.png",
+  ...(await readdir("dist/icons")).map((f) => "/icons/" + f),
   ...assets,
 ];
 const version = createHash("sha256")

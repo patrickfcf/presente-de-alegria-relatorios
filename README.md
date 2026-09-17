@@ -33,7 +33,7 @@ npm run lint
 npm run build
 ```
 
-`npm run preview` serve o build de produção, incluindo o service worker. O PWA exige HTTPS em produção. `npm run icons` regenera os ícones a partir do logo oficial.
+`npm run preview` serve o build de produção, incluindo o service worker. O PWA exige HTTPS em produção. `npm run icons` regenera favicon, Apple touch icon e ícones Android a partir de `assets/branding/app-icon.jpg`, imagem fornecida pelo responsável. O logo do cabeçalho e do PDF é independente. As URLs dos ícones incluem o hash da imagem para renovar o cache.
 
 ## O que está incluído
 
