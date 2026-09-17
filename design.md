@@ -36,3 +36,13 @@ Prever carregamento, vazio, offline, erro recuperável e sucesso. Respeitar redu
 `public/logo.png`: cabeçalho, PDF e e-mail. `assets/branding/app-icon.jpg`: origem autorizada dos ícones PWA; `npm run icons` regenera versões com hash. Licenças em [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 Para mudanças visuais, incluir no PR evidência com dados sintéticos e dizer quais tamanhos/dispositivos foram realmente testados. Não declarar instalação física com base apenas em screenshot.
+
+## Tema automático
+
+A interface acompanha a preferência claro/escuro do navegador ou sistema com `prefers-color-scheme`, inclusive quando ela muda com o app aberto. Não há configuração salva nem recarga do formulário. Sem preferência, o padrão é claro. Os tokens semânticos ficam em `src/index.css`; componentes usam esses tokens em `src/App.css`.
+
+No escuro, o fundo é `#15111D`, cartões `#211B2C`, texto principal `#F3EDF9` e links/foco `#C4A5FF`. Os botões mantêm o roxo oficial com texto branco. `color-scheme` adapta controles nativos; metadados `theme-color` oferecem cores correspondentes aos navegadores compatíveis.
+
+Logotipo, assinatura e QR Code preservam suas cores sobre branco. PDFs, e-mails e ícones não são invertidos. O manifest mantém as cores estáticas da marca como fallback: splash screens e barras do sistema dependem do suporte do navegador/SO e podem não acompanhar o tema.
+
+Validação manual: alternar claro/escuro com uma página aberta; conferir início, feeds, filtros, login, administração, formulário, assinatura e instalação em larguras de 390, 412 e 1280 px. Confirmar legibilidade, foco, campos nativos e preservação dos dados digitados. Verificar também a PWA instalada em iOS e Android; simulação não substitui dispositivos físicos.
