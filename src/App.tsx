@@ -29,7 +29,8 @@ import { Home } from "./components/Home";
 import { EventsFeed, NewsFeed } from "./components/Feed";
 import { PublicFeed } from "./components/PublicFeed";
 import "./App.css";
-import { publicPages } from "../shared/seo";
+import { Landing } from "./components/Landing";
+import { publicPages, publicPath } from "../shared/seo";
 const ReportForm = lazy(() =>
   import("./components/ReportForm").then((m) => ({ default: m.ReportForm })),
 );
@@ -195,7 +196,7 @@ export default function App() {
     const visibility = () => {
       if (
         document.visibilityState === "visible" &&
-        ["/", "/eventos", "/noticias", "/admin"].includes(route)
+        ["/minha-celula", "/eventos", "/noticias", "/admin"].includes(route)
       )
         void refresh();
     };
@@ -209,7 +210,7 @@ export default function App() {
       window.scrollTo({ top: 0 });
       return;
     }
-    if (publicPages.some(p => p.path === path)) { location.assign(path + "/"); return; }
+    if (publicPages.some(p => p.path === path)) { location.assign(publicPath(path)); return; }
     if (location.pathname !== "/") { location.assign("/#" + path); return; }
     location.hash = path;
   }
@@ -222,8 +223,8 @@ export default function App() {
     setError("");
     setSession(null);
     setLogoutConfirm(false);
-    navigate("/");
     await supabase?.auth.signOut({ scope: "local" });
+    navigate("/");
   }
   async function submitted(id: string) {
     await refresh();
@@ -241,7 +242,8 @@ export default function App() {
     }
   }, [route]);
   let content;
-  if (route === "/sobre") content = <>
+  if (route === "/") content = <Landing />;
+  else if (route === "/sobre") content = <>
     <div className="eyebrow">PRESENTE DE ALEGRIA</div><h1>Alegria que aproxima.</h1>
     <p className="intro">Acompanhe nossos encontros, conheça as novidades da ONG e descubra como fazer parte dessa história.</p>
     <div className="card"><h2>Seu próximo gesto de alegria</h2><p>Participe de uma ação voluntária ou conheça as campanhas de apoio ao Presente de Alegria.</p><div className="publication-links"><a className="primary" href="/eventos/">Participar de um evento</a><a className="secondary" href="/ajudas/">Quero ajudar</a></div></div>
@@ -304,14 +306,9 @@ export default function App() {
     content = (
       <>
         <div className="eyebrow">PRESENTE EM CADA ENCONTRO</div>
-        <h1>
-          Alegria que
-          <br />
-          aproxima.
-        </h1>
+        <h1>Minha célula</h1>
         <p className="intro">
-          Um espaço para a sua célula, os nossos encontros e tudo que acontece
-          na ONG.
+          Entre para acompanhar sua equipe e as atividades da sua célula.
         </p>
         <Entry />
       </>
@@ -338,19 +335,19 @@ export default function App() {
     content = (
       <div className="card">
         <h1>Acesso restrito à diretoria</h1>
-        <button className="primary" onClick={() => navigate("/")}>
+        <button className="primary" onClick={() => navigate("/minha-celula")}>
           Voltar à minha célula
         </button>
       </div>
     );
   else if (
     profile.role === "communications" &&
-    (route === "/" || route === "/publicacoes")
+    (route === "/minha-celula" || route === "/publicacoes")
   )
     content = <Publications {...data} onRefresh={refresh} />;
   else if (
     isVolunteer &&
-    (route === "/" || route === "/eventos" || route === "/calendario")
+    (route === "/minha-celula" || route === "/eventos" || route === "/calendario")
   )
     content = (
       <EventsFeed events={data.events} calendar={route === "/calendario"} />
@@ -371,7 +368,7 @@ export default function App() {
         report={submittedReport}
         attendance={data.attendance}
         success
-        onClose={() => navigate("/")}
+        onClose={() => navigate("/minha-celula")}
       />
     ) : (
       <div className="card">
@@ -407,7 +404,7 @@ export default function App() {
       <ReportForm
         profile={profile}
         {...data}
-        onClose={() => navigate("/")}
+        onClose={() => navigate("/minha-celula")}
         onSuccess={(id) => void submitted(id)}
       />
     );
@@ -520,7 +517,7 @@ export default function App() {
           {(
             [
               {
-                path: profile?.role === "communications" ? "/publicacoes" : "/",
+                path: profile?.role === "communications" ? "/publicacoes" : "/minha-celula",
                 title:
                   profile?.role === "communications"
                     ? "Publicações"
@@ -529,12 +526,12 @@ export default function App() {
               },
               { path: "/eventos", title: "Eventos", icon: "calendar" },
               { path: "/noticias", title: "Notícias", icon: "news" },
-              { path: "/ajudas", title: "Ajudas", icon: "heart" },
+              { path: "/ajudas", title: "Doação", icon: "heart" },
             ] as const
           ).map((item) => (
             <a
               key={item.path}
-              href={publicPages.some(p => p.path === item.path) ? item.path + "/" : "/#" + item.path}
+              href={publicPages.some(p => p.path === item.path) ? publicPath(item.path) : "/#" + item.path}
               aria-current={route === item.path ? "page" : undefined}
               onClick={(e) => { if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) { e.preventDefault(); navigate(item.path); } }}
             >

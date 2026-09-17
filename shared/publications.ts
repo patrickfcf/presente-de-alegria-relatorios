@@ -63,7 +63,7 @@ export function validateDetails(
   if (data.action_url && !data.action_label)
     throw new Error("Informe o texto do botão de participação.");
   if (kind !== "campaigns" && (data.pix_key || data.pix_beneficiary))
-    throw new Error("Pix só está disponível em Ajudas.");
+    throw new Error("Pix só está disponível na área Doação.");
   if (
     (data.pix_key && !data.pix_beneficiary) ||
     (data.pix_beneficiary && !data.pix_key)

@@ -46,3 +46,7 @@ Ordenação por primeira publicação nos eventos, busca/categoria/mês, opçõe
 ## Atualização de acesso por e-mail
 
 O responsável confirmou a Site URL de produção e apresentou um e-mail recebido com OTP após configurar SMTP. Entrega do código confirmada; conclusão do login ainda depende de teste. O template `supabase/templates/magic-link.html` recebeu logo oficial, cores da marca, estrutura em tabelas, estilos inline e código selecionável compatível com 6–8 dígitos. A nova identidade visual está preparada no repositório e deve ser copiada para Magic Link no painel; não foi aplicada automaticamente nem testada em clientes de e-mail reais.
+
+## Página inicial e Doação
+
+Página inicial pública na raiz com apresentação breve e quatro cartões. Logo retorna ao início; menu continua com quatro itens, sem aba Início. Minha célula passa a `/#/minha-celula`, mantendo autenticação e permissões. Ajudas foi renomeada visualmente para Doação, preservando `/ajudas/` e os links compartilhados. Metadados e sitemap incluem a página inicial.

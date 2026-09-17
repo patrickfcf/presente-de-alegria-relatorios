@@ -19,7 +19,7 @@ const localDate = (iso: string) =>
   })
     .format(new Date(iso))
     .replace(" ", "T");
-const titles = { news: "Notícias", events: "Eventos", campaigns: "Ajudas" };
+const titles = { news: "Notícias", events: "Eventos", campaigns: "Doação" };
 type Item = News | Event | Campaign;
 export function Publications({
   news,
@@ -298,7 +298,7 @@ function Editor({
         </label>
       )}
       <p className="small muted">
-        Horários de Brasília. Notícias e Ajudas com publicação futura ficam
+        Horários de Brasília. Notícias e campanhas de doação com publicação futura ficam
         ocultas até a data indicada. Eventos publicados aparecem imediatamente.
       </p>
       <fieldset>

@@ -1102,5 +1102,13 @@ dialog::backdrop {
 }
 
 .feed-filters { margin: 24px 0 8px; }
+.welcome-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 28px 0 20px; }
+.welcome-card { display: flex; flex-direction: column; padding: 24px; background: #fff; border: 1px solid #e9e3ee; border-radius: 20px; text-decoration: none; color: #2d1d54; }
+.welcome-card:hover { border-color: #6437d1; }
+.welcome-icon { color: #6437d1; margin-bottom: 16px; }
+.welcome-card h2 { margin: 0 0 8px; font-size: 21px; }
+.welcome-card p { margin: 0 0 22px; font-size: 15px; line-height: 1.6; color: #62586e; }
+.welcome-action { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #6437d1; font-size: 14px; font-weight: 700; margin-top: auto; }
+@media (max-width: 540px) { .welcome-grid { grid-template-columns: minmax(0, 1fr); } }
 .feed-filters .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 420px) { .feed-filters .filters { grid-template-columns: minmax(0, 1fr); } }

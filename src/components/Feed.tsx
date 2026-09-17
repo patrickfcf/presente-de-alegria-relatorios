@@ -286,7 +286,7 @@ export function CampaignsFeed({ campaigns }: { campaigns: Campaign[] }) {
   return (
     <>
       <div className="eyebrow">CADA GESTO FAZ DIFERENÇA</div>
-      <h1>Ajudas</h1>
+      <h1>Doação</h1>
       <SharePage path="/ajudas" title="Ajude o Presente de Alegria" />
       <p className="intro">
         Conheça as campanhas e escolha como apoiar o Presente de Alegria.
