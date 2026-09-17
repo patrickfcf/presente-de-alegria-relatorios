@@ -22,7 +22,7 @@ Skills são instruções versionadas, não permissões de acesso nem dependênci
 - Coordenador preenche/envia; dados e assinatura do profissional pertencem à instituição.
 - Célula vem de cadastro/vínculo, nunca texto livre. Uma visita é esperada por mês ativo, com suporte a visitas adicionais.
 - Quantidade vazia significa desconhecida, não zero. Chamada distingue presente, falta justificada e falta sem justificativa válida.
-- Preserve hierarquia, histórico e regras em `docs/administration.md`. Diretores/coordenadores não publicam; Comunicação não acessa relatórios.
+- Preserve hierarquia, histórico e regras em `docs/administration.md`. Líderes de segmento/coordenadores não publicam; Comunicação não acessa relatórios.
 
 ## Trabalho e validação
 

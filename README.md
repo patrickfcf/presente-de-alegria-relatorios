@@ -44,8 +44,8 @@ npm run format:check
 ## O que está incluído
 
 - Entrada por código enviado ao e-mail cadastrado, sem cadastro público.
-- Cinco perfis: administrador, diretor, coordenador, voluntário individual e Comunicação e Eventos.
-- Hierarquia diretor → coordenador → voluntários; substituição de coordenador com preservação do histórico.
+- Cinco perfis: administrador, líder de segmento, coordenador, voluntário individual e Comunicação e Eventos.
+- Hierarquia líder de segmento → coordenador → voluntários; substituição de coordenador com preservação do histórico.
 - Uma visita esperada por célula/mês; estrutura permite visitas adicionais sem reescrever o banco.
 - Formulário em quatro passos: visita e chamada, profissional e indicadores, comprovação, revisão.
 - CPF do profissional da instituição opcional; quantidades desconhecidas distintas de zero e identificação de estimativas.
@@ -81,7 +81,7 @@ Todos são voluntários; o perfil cadastrado determina as permissões. A escolha
 | Perfil                | Responsabilidade                                                         |
 | --------------------- | ------------------------------------------------------------------------ |
 | Administrador         | Gerencia acessos, células, equipes, relatórios e publicações             |
-| Diretor de célula     | Gerencia seus coordenadores, consulta voluntários e acompanha relatórios |
+| Líder de segmento     | Gerencia seus coordenadores, consulta voluntários e acompanha relatórios |
 | Coordenador de célula | Gerencia sua equipe, registra chamada e envia relatórios                 |
 | Voluntário individual | Consulta eventos e calendário                                            |
 | Comunicação e Eventos | Publica notícias e eventos; não acessa documentos das instituições       |

@@ -104,7 +104,7 @@ export default function App() {
         .maybeSingle();
       if (pe || !p)
         throw new Error(
-          "Seu cadastro ainda não está ativo. Peça à diretoria para cadastrar seu e-mail e sua célula.",
+          "Seu cadastro ainda não está ativo. Peça à liderança de segmento para cadastrar seu e-mail e sua célula.",
         );
       if (["admin", "director", "coordinator"].includes(p.role))
         await admin({
@@ -233,7 +233,7 @@ export default function App() {
     await refresh();
     navigate("/enviado/" + id);
   }
-  const isDirector = profile && ["admin", "director"].includes(profile.role);
+  const isSegmentLeader = profile && ["admin", "director"].includes(profile.role);
   const isAdminRoute = ["/admin", "/cadastros", "/publicacoes"].includes(route);
   const canPublish = profile && ["admin", "communications"].includes(profile.role);
   const isVolunteer = profile?.role === "volunteer";
@@ -309,10 +309,10 @@ export default function App() {
             CPF é opcional.
           </p>
           <p>
-            Coordenadores acessam os relatórios das células autorizadas; a diretoria
-            acompanha os relatórios da ONG. Notícias, eventos e campanhas de ajuda
-            publicados são públicos. Dados das células e documentos continuam
-            restritos.
+            Coordenadores acessam os relatórios das células autorizadas; a liderança
+            de segmento acompanha os relatórios da ONG. Notícias, eventos e campanhas
+            de ajuda publicados são públicos. Dados das células e documentos
+            continuam restritos.
           </p>
           <p>
             Rascunhos locais guardam apenas data, horários e quantidades por até 7
@@ -321,8 +321,8 @@ export default function App() {
           </p>
           <p>
             Para corrigir informações, tratar de acesso ou solicitar esclarecimentos
-            sobre retenção e privacidade, procure a diretoria do Presente de Alegria
-            pelos canais habituais da ONG.
+            sobre retenção e privacidade, procure a liderança de segmento do Presente
+            de Alegria pelos canais habituais da ONG.
           </p>
         </div>
       </>
@@ -369,13 +369,13 @@ export default function App() {
     );
   else if (
     (route === "/publicacoes" && !canPublish) ||
-    (route === "/admin" && !isDirector) ||
+    (route === "/admin" && !isSegmentLeader) ||
     (route === "/cadastros" &&
       !["admin", "director", "coordinator"].includes(profile.role))
   )
     content = (
       <div className="card">
-        <h1>Acesso restrito à diretoria</h1>
+        <h1>Acesso restrito à liderança de segmento</h1>
         <button className="primary" onClick={() => navigate("/minha-celula")}>
           Voltar à minha célula
         </button>
@@ -543,7 +543,7 @@ export default function App() {
           <a href="/sobre/">Sobre o Presente</a>
           <a href="/instalar/">Instalar aplicativo</a>
           <a href="/#/privacidade">Privacidade</a>
-          <a href="/#/admin">Área da diretoria</a>
+          <a href="/#/admin">Área da liderança de segmento</a>
         </div>
       </footer>
       {route !== "/relatorios/novo" && (

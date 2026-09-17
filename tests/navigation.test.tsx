@@ -19,6 +19,7 @@ vi.mock("../src/lib/api", () => ({
 }));
 afterEach(() => {
   cleanup();
+  localStorage.removeItem("pda:entry");
   history.replaceState({}, "", "/");
 });
 it("opens the clean public events URL with crawlable navigation before login", async () => {
@@ -75,4 +76,14 @@ it("keeps donation campaigns public at their existing shared URL", async () => {
   history.replaceState({}, "", "/ajudas/");
   render(<App />);
   expect(await screen.findByRole("heading", { name: "Doação" })).toBeVisible();
+});
+
+it("recognizes an existing leader entry preference with the new official name", async () => {
+  localStorage.setItem("pda:entry", "director");
+  history.replaceState({}, "", "/#/minha-celula");
+  render(<App />);
+  expect(
+    await screen.findByText("Líder de segmento", { exact: true }),
+  ).toBeVisible();
+  expect(screen.queryByText("Diretor de célula")).not.toBeInTheDocument();
 });

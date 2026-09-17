@@ -20,7 +20,7 @@ type Props = {
 const roleNames: Record<Role, string> = {
   communications: "Equipe de Comunicação e Eventos",
   admin: "Administrador",
-  director: "Diretor",
+  director: "Líder de segmento",
   coordinator: "Coordenador",
   volunteer: "Voluntário individual",
 };
@@ -529,7 +529,7 @@ function RegistryEditor({
                 }}
               >
                 <option value="communications">Comunicação e Eventos</option>
-                <option value="director">Diretor</option>
+                <option value="director">Líder de segmento</option>
                 <option value="coordinator">Coordenador</option>
                 <option value="volunteer">Voluntário individual</option>
               </select>
@@ -558,7 +558,7 @@ function RegistryEditor({
           {["volunteer", "coordinator"].includes(role) && (
             <label>
               {role === "coordinator"
-                ? "Diretor responsável"
+                ? "Líder de segmento responsável"
                 : "Coordenador responsável"}
               <select
                 value={manager}

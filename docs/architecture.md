@@ -16,7 +16,7 @@ Frontend estático React/TypeScript/Vite em Cloudflare Pages; Supabase fornece A
 | news / events / campaigns | Conteúdo editorial público quando liberado; rascunhos restritos e autores privados                          |
 | private.audit_events      | Operações relevantes, sem conteúdo dos formulários                                                          |
 
-Diretor → coordenadores → voluntários é representado por `profiles.manager_id`; validação ocorre em operações transacionais exclusivas do servidor. A Comunicação é independente dessa árvore. O administrador inicial é provisionado fora do formulário público.
+Líder de segmento → coordenadores → voluntários é representado por `profiles.manager_id`; validação ocorre em operações transacionais exclusivas do servidor. A Comunicação é independente dessa árvore. O administrador inicial é provisionado fora do formulário público.
 
 ## Rotas
 
@@ -25,7 +25,7 @@ Páginas públicas também têm URLs sem hash e HTML de metadados: `/sobre`, `/e
 Rotas por hash evitam configuração extra de SPA e simplificam URLs no PWA:
 `/` apresentação pública; `#/minha-celula` entrada privada; `#/relatorios/novo`; `#/enviado/:id`; `#/eventos`; `#/calendario`; `#/noticias`; `#/admin`; `#/cadastros`; `#/publicacoes`; `#/instalar`; `#/privacidade`.
 
-Voluntários veem Eventos/Calendário; Comunicação vê Publicações/Eventos; coordenadores e diretores têm Minha célula/Eventos/Notícias. O menu é apenas apresentação: RLS e funções aplicam a autorização.
+Voluntários veem Eventos/Calendário; Comunicação vê Publicações/Eventos; coordenadores e líderes de segmento têm Minha célula/Eventos/Notícias. O menu é apenas apresentação: RLS e funções aplicam a autorização.
 
 ## Envio e concorrência
 

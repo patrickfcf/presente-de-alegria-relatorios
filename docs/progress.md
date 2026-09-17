@@ -56,3 +56,9 @@ Página inicial pública na raiz com apresentação breve e quatro cartões. Log
 Documentação de arquitetura/design/testes/index, README com Resend/Cloudflare, template de PR, CODEOWNERS, Dependabot e Prettier preparados. CI passa a testar aplicação e banco Supabase descartável, com gate `verify`. Checks locais: 43 testes, lint (dois avisos preexistentes), build e auditoria runtime sem vulnerabilidades conhecidas. O banco isolado deve ser validado no runner GitHub porque este ambiente não tem Docker.
 
 A proteção de `main` ainda depende de confirmação de identidade (sudo mode) no GitHub. Política proposta: PR obrigatório, `verify` verde, branch atualizada, conversas resolvidas, histórico linear, sem bypass de administradores, sem force push/exclusão. Não declarar ativa antes de confirmar a regra salva. Não foram alterados acessos de colaboradores, SMTP, banco de produção nem configurações pagas.
+
+## Nomenclatura: Líder de segmento
+
+Interface, cadastros, avisos de acesso, mensagens do servidor e guias usam Líder de segmento / liderança de segmento. A chave de autorização `director` permanece compatível com perfis, APIs, RLS e preferências existentes; nenhuma permissão ou vínculo foi alterado. A migration `20260917195753_segment_leader_terminology.sql` foi aplicada e os comentários das colunas `profiles.role` e `manager_id` foram conferidos no Supabase. Funções `admin` v4 e `submit-report` v3 publicadas, ambas com verificação JWT preservada.
+
+44 testes de aplicação e build passaram, incluindo preferência de entrada persistida com a chave antiga. O frontend depende do merge do PR e deploy do Cloudflare. CI do PR verifica a migration em banco descartável e o isolamento existente. Advisor mantém apenas os achados já documentados: auditoria privada sem política de cliente e proteção de senhas vazadas desativada; nenhuma configuração de Auth foi alterada.

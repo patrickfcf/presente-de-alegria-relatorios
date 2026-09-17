@@ -54,7 +54,7 @@ select id,'NOME DO ADMINISTRADOR',email,'admin',true
 from auth.users where lower(email)=lower('EMAIL DO ADMINISTRADOR');
 ```
 
-3. Confirmar que uma linha foi criada. Entrar no app com o código recebido por e-mail. Cadastrar instituições/células oficiais, diretores, coordenadores e Comunicação.
+3. Confirmar que uma linha foi criada. Entrar no app com o código recebido por e-mail. Cadastrar instituições/células oficiais, líderes de segmento, coordenadores e Comunicação.
 4. Não colocar o comando preenchido com dados reais em migrations ou no repositório.
 
 ## Aplicar atualizações de backend
@@ -67,12 +67,12 @@ Deploy das funções inclui arquivos `shared/`, `_shared/http.ts` e import map `
 
 ## Aceite antes de convidar pessoas reais
 
-- Administrador entra por código, cria diretor e Comunicação; diretor cria coordenador; coordenador cadastra voluntário.
-- Voluntário entra e vê eventos/calendário, sem relatórios. Diretor/coordenador não publicam; Comunicação publica e não acessa documentos.
+- Administrador entra por código, cria líder de segmento e Comunicação; líder de segmento cria coordenador; coordenador cadastra voluntário.
+- Voluntário entra e vê eventos/calendário, sem relatórios. Líder de segmento/coordenador não publicam; Comunicação publica e não acessa documentos.
 - Coordenador registra visita e chamada, preenche dados do profissional, assina na tela, revisa e envia.
 - PDF contém logo, dados, totais, declaração e assinatura. Original e PDF são baixados.
 - Repetir com documento assinado em papel; originais são anexados ao PDF e permanecem baixáveis separadamente.
-- Diretor vê envio mensal; outra célula não lê o relatório nem o arquivo; conta desativada perde acesso.
+- Líder de segmento vê envio mensal; outra célula não lê o relatório nem o arquivo; conta desativada perde acesso.
 - Trocar coordenação de uma equipe de teste; membros e histórico permanecem corretos.
 - iPhone/Safari: compartilhar → adicionar à tela inicial. Android/Chrome: instalar/adicionar à tela inicial. Confirmar logo e abertura standalone em dispositivos reais.
 - Verificar larguras 390px e 412px e desktop administrativo; foco, contraste, toque no canvas, logout e erro de conexão.

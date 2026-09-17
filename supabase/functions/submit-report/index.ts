@@ -20,7 +20,7 @@ Deno.serve(async (req: Request) => {
     if (!["admin", "coordinator"].includes(profile.role))
       throw new HttpError(
         403,
-        "A diretoria tem acesso de consulta. O envio deve ser feito por um coordenador.",
+        "A liderança de segmento tem acesso de consulta. O envio deve ser feito por um coordenador.",
       );
     const bytes = await limitedBody(req, 17 * 1024 * 1024);
     const form = await new Response(bytes, {

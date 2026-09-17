@@ -255,7 +255,7 @@ export function ReportForm({
       {!available.length ? (
         <div className="card">
           <h2>Nenhuma célula vinculada</h2>
-          <p>Peça à diretoria para concluir seu cadastro.</p>
+          <p>Peça à liderança de segmento para concluir seu cadastro.</p>
         </div>
       ) : (
         <form

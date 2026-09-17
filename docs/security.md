@@ -8,7 +8,7 @@ Revisão técnica em 17/09/2026. Não representa certificação legal ou garanti
 - Papéis e situação vêm de `profiles`, nunca de `user_metadata`, seleção de tela ou payload do cliente.
 - Coordenadores leem documentos apenas de suas células. Voluntários e Comunicação não leem relatórios, presença, CPF ou assinaturas.
 - Desativação consultada a cada operação e leitura de dados; não depende de renovar o JWT.
-- Diretoria não pode publicar; Comunicação não pode cadastrar usuários. Promoção/substituição exige administrador ou diretor da equipe.
+- Liderança de segmento não pode publicar; Comunicação não pode cadastrar usuários. Promoção/substituição exige administrador ou líder de segmento da equipe.
 - Storage privado e política vinculada ao arquivo exato de relatório enviado; uploads e exclusões somente no servidor.
 - Funções privilegiadas SQL são SECURITY INVOKER, com EXECUTE revogado de PUBLIC/anon/authenticated. Helpers de leitura SECURITY DEFINER ficam no esquema não exposto `private`, com search_path vazio e usuário autenticado obrigatório.
 - Limites de corpo, arquivo, resolução e páginas. Tipo reconhecido pelos bytes; PDF gerado no servidor. PDFs anexados não são considerados validação criptográfica da assinatura.

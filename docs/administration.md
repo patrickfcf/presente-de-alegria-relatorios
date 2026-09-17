@@ -5,7 +5,7 @@ Todos os perfis representam voluntários; o perfil controla responsabilidades e 
 | Perfil                | Pessoas                                                                                                     | Relatórios                                                             | Publicações                                           |
 | --------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------- |
 | Administrador         | Cria/edita os outros quatro perfis; reenvia acesso; exclui acesso; vincula responsáveis e células           | Todas as células, downloads e indicadores                              | Controle administrativo completo                      |
-| Diretor               | Cria/edita seus coordenadores; consulta voluntários; substitui coordenador por voluntário da própria equipe | Consulta geral, pendências e comparações                               | Apenas leitura das publicações disponíveis            |
+| Líder de segmento     | Cria/edita seus coordenadores; consulta voluntários; substitui coordenador por voluntário da própria equipe | Consulta geral, pendências e comparações                               | Apenas leitura das publicações disponíveis            |
 | Coordenador           | Cria/edita/desativa e reenvia acesso de seus voluntários                                                    | Envia e consulta relatórios das células autorizadas; registra presença | Apenas leitura                                        |
 | Voluntário individual | Próprio perfil, sem edição de permissões                                                                    | Sem acesso                                                             | Eventos, calendário, notícias e ajudas públicas       |
 | Comunicação e Eventos | Sem gestão de pessoas                                                                                       | Sem acesso a documentos, CPF ou assinatura                             | Cria/edita/publica/arquiva notícias, eventos e ajudas |
@@ -15,8 +15,8 @@ Escolher uma opção na tela inicial não altera o perfil. A permissão é sempr
 ## Começar
 
 1. Administrador cadastra instituições e células, usando a lista oficial da ONG.
-2. Cadastra diretores e a equipe de Comunicação e Eventos.
-3. Administrador ou diretor cadastra coordenador: nome, e-mail, nome de palhaço, celular, diretor responsável e célula.
+2. Cadastra líderes de segmento e a equipe de Comunicação e Eventos.
+3. Administrador ou líder de segmento cadastra coordenador: nome, e-mail, nome de palhaço, celular, líder de segmento responsável e célula.
 4. Coordenador cadastra voluntários em **Minha equipe**. A célula é herdada do coordenador.
 5. O cadastro envia um código por e-mail. Depois, cada pessoa solicita novo código em **Receber código**.
 
@@ -24,7 +24,7 @@ Não compartilhe códigos nem senhas. O reenvio de acesso envia um novo OTP e n�
 
 ## Trocar a coordenação
 
-Administrador ou diretor da equipe escolhe **Substituir coordenador**, seleciona um voluntário ativo da mesma equipe e confirma. O voluntário assume a coordenação e os vínculos; o coordenador anterior passa a voluntário. Os relatórios e nomes históricos permanecem como registrados.
+Administrador ou líder de segmento da equipe escolhe **Substituir coordenador**, seleciona um voluntário ativo da mesma equipe e confirma. O voluntário assume a coordenação e os vínculos; o coordenador anterior passa a voluntário. Os relatórios e nomes históricos permanecem como registrados.
 
 Antes de desativar/excluir um responsável, reatribua os subordinados. **Excluir acesso** bloqueia o perfil e remove o acesso de autenticação, mantendo referências necessárias aos relatórios e à auditoria. Não é um comando de descarte de todos os dados pessoais.
 
@@ -61,3 +61,9 @@ Eventos, Notícias, Calendário e Ajudas estão disponíveis sem login. O acesso
 Use a prévia e confira os destinos dos links. Só URLs HTTPS sem credenciais são aceitas. Notícias e Ajudas futuras só ficam públicas na data indicada; eventos publicados aparecem imediatamente. Campanhas encerradas ficam no histórico mediante filtro e não exibem botões de participação ou Pix. Arquivar remove a publicação do feed.
 
 O aplicativo apenas divulga campanhas; não processa pagamentos, confirma doações, vende números ou executa sorteios. Em rifas/bingos, o responsável deve fornecer regras, condições e contato, e conferir a adequação da ação antes de publicar. Não crie campanhas ou chaves de exemplo na produção.
+
+## Nome do perfil e compatibilidade
+
+O nome oficial é **Líder de segmento**. O identificador persistido `director` é mantido como chave técnica de compatibilidade em `profiles.role`, APIs, RLS e preferências de entrada existentes. Não é um sexto perfil. Alterar a denominação não amplia nem reduz permissões. `profiles.manager_id` continua ligando coordenadores ao líder de segmento e voluntários ao coordenador.
+
+A migration `segment_leader_terminology` documenta essa correspondência no banco sem regravar perfis, vínculos ou auditoria histórica. As migrations antigas permanecem imutáveis.

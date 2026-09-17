@@ -358,7 +358,7 @@ h3 {
   color: #81738e;
   margin: 0;
 }
-.director-banner {
+.leadership-banner {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -372,7 +372,7 @@ h3 {
   padding: 18px 22px;
   margin-bottom: 24px;
 }
-.director-banner small {
+.leadership-banner small {
   display: block;
   font-size: 12px;
   margin-top: 4px;

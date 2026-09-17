@@ -249,7 +249,10 @@ Deno.serve(async (req: Request) => {
           "Confira nome, e-mail e perfil. Administradores são provisionados fora deste formulário.",
         );
       if (profile.role === "director" && body.role !== "coordinator")
-        throw new HttpError(403, "Diretores podem cadastrar coordenadores.");
+        throw new HttpError(
+          403,
+          "Líderes de segmento podem cadastrar coordenadores.",
+        );
       if (
         ["coordinator", "volunteer"].includes(String(body.role)) &&
         (!str(body.clown_name, 1, 100) ||

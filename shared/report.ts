@@ -165,6 +165,7 @@ export function normalizeReport(f: ReportInput): ReportInput {
     })),
   };
 }
+// The persisted key "director" represents Líder de segmento; keep it stable for existing clients.
 export type Role =
   "coordinator" | "director" | "admin" | "volunteer" | "communications";
 export type Profile = {
