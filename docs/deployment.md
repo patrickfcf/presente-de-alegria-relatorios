@@ -9,7 +9,7 @@
 
 ## Cloudflare Pages com GitHub
 
-1. Em https://dash.cloudflare.com/, abra a conta desejada → **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**. A nomenclatura pode variar com a interface; escolha Pages com integração Git, não upload manual.
+1. Em https://dash.cloudflare.com/, abra a conta desejada → **Workers & Pages** → **Create application** → **Pages** → **Import an existing Git repository**. A nomenclatura pode variar com a interface; escolha Pages com integração Git, não upload manual.
 2. Se necessário, autorize a aplicação GitHub Cloudflare apenas para `patrickfcf/presente-de-alegria-relatorios`.
 3. Nome do projeto: `presente-de-alegria-relatorios`; branch de produção: `main`.
 4. Framework: **Vite** ou **None**; comando de build: `npm run build`; saída: `dist`; diretório raiz: repositório.
@@ -59,7 +59,7 @@ from auth.users where lower(email)=lower('EMAIL DO ADMINISTRADOR');
 
 Somente administradores técnicos. Autenticar Supabase CLI localmente sem colar tokens no chat. Conferir os comandos com `supabase --help`, vincular ao projeto e conferir a lista de migrations antes de `db push`.
 
-As migrations já foram aplicadas por MCP. Seus identificadores remotos podem diferir dos timestamps locais; reconciliar a tabela de histórico pela correspondência de nomes antes do primeiro `db push`. **Não reaplicar o esquema inicial sobre o banco existente.**
+As cinco migrations já foram aplicadas. Os nomes e timestamps dos arquivos foram alinhados ao histórico remoto e conferidos em 17/09/2026. Antes de futuras atualizações, conferir `supabase migration list` no projeto vinculado. **Não reaplicar o esquema inicial sobre o banco existente.**
 
 Deploy das funções inclui arquivos `shared/`, `_shared/http.ts` e import map `supabase/functions/deno.json`. O fontkit e as fontes do PDF são dependências somente do servidor. Segredos são disponibilizados pelo Supabase, nunca por variáveis VITE.
 

@@ -15,8 +15,10 @@
 ## Verificado
 
 - TypeScript e build de produção.
-- Testes automatizados de componentes, validação, cálculos, PDF e permissões de publicação.
-- SQL real em transação revertida: isolamento entre células, arquivos privados, deativação, perfis, duplicação, retomada de falha, concorrência e troca de coordenação.
+- 25 testes automatizados aprovados: componentes, validação, cálculos, PDF e permissões de publicação.
+- GitHub Actions: workflow Quality aprovado no commit `b4dd1f7`, com instalação, lint, testes e build de produção.
+- Cinco migrations locais alinhadas ao histórico aplicado no Supabase.
+- SQL real em transação revertida: isolamento entre células, arquivos privados, desativação, perfis, duplicação, retomada de falha, concorrência e troca de coordenação.
 - PDF sintético renderizado e inspecionado; fonte incorporada para consistência.
 - Security Advisor sem WARNING/ERROR; INFO intencional em auditoria privada sem política de cliente.
 
