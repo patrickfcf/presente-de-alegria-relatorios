@@ -10,7 +10,7 @@ export const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "Presente de Alegria",
-  url: siteOrigin + "/sobre",
+  url: siteOrigin + "/sobre/",
   inLanguage: "pt-BR",
   publisher: { "@type": "Organization", name: "Presente de Alegria", url: "https://presentedealegria.org.br/", logo: siteOrigin + "/logo.png" },
 };

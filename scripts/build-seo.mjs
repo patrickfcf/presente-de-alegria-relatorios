@@ -7,9 +7,9 @@ const manifest = JSON.parse(await readFile('dist/manifest.webmanifest', 'utf8'))
 const socialImage = siteOrigin + manifest.icons.find(icon => icon.sizes === '512x512' && icon.purpose === 'any').src;
 const schema = JSON.stringify(websiteSchema).replaceAll('<','\\u003c');
 const hash = createHash('sha256').update(schema).digest('base64');
-const links = publicPages.map(p=>`<a href="${p.path}">${escape(p.heading)}</a>`).join(' · ');
+const links = publicPages.map(p=>`<a href="${p.path}/">${escape(p.heading)}</a>`).join(' · ');
 for (const page of publicPages) {
-  const canonical = siteOrigin + page.path;
+  const canonical = siteOrigin + page.path + "/";
   let html = template.replace(/<title>.*?<\/title>/s,`<title>${escape(page.title)}</title>`)
     .replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/>/,`<meta name="description" content="${escape(page.description)}" />`)
     .replace('noindex,nofollow','index,follow,max-image-preview:large');
@@ -27,10 +27,10 @@ for (const page of publicPages) {
   await writeFile('dist'+page.path+'/index.html',html);
 }
 await writeFile('dist/robots.txt',`User-agent: *\nAllow: /\nSitemap: ${siteOrigin}/sitemap.xml\n`);
-await writeFile('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${publicPages.map(p=>`<url><loc>${siteOrigin+p.path}</loc></url>`).join('')}</urlset>`);
+await writeFile('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${publicPages.map(p=>`<url><loc>${siteOrigin+p.path+"/"}</loc></url>`).join('')}</urlset>`);
 let headers = await readFile('dist/_headers','utf8');
 headers = headers.replace("script-src 'self';",`script-src 'self' 'sha256-${hash}';`);
 headers += '\nhttps://:project.pages.dev/*\n  X-Robots-Tag: noindex, nofollow\nhttps://:preview.:project.pages.dev/*\n  X-Robots-Tag: noindex, nofollow\n';
 await writeFile('dist/_headers',headers);
-await writeFile('dist/404.html','<!doctype html><html lang="pt-BR"><meta charset="UTF-8"><meta name="robots" content="noindex"><title>Página não encontrada | Presente de Alegria</title><h1>Página não encontrada</h1><p><a href="/sobre">Conheça o Presente de Alegria</a></p></html>');
+await writeFile('dist/404.html','<!doctype html><html lang="pt-BR"><meta charset="UTF-8"><meta name="robots" content="noindex"><title>Página não encontrada | Presente de Alegria</title><h1>Página não encontrada</h1><p><a href="/sobre/">Conheça o Presente de Alegria</a></p></html>');
 console.log('Generated public SEO pages, sitemap, social metadata and crawler directives.');

@@ -209,7 +209,7 @@ export default function App() {
       window.scrollTo({ top: 0 });
       return;
     }
-    if (publicPages.some(p => p.path === path)) { location.assign(path); return; }
+    if (publicPages.some(p => p.path === path)) { location.assign(path + "/"); return; }
     if (location.pathname !== "/") { location.assign("/#" + path); return; }
     location.hash = path;
   }
@@ -244,9 +244,9 @@ export default function App() {
   if (route === "/sobre") content = <>
     <div className="eyebrow">PRESENTE DE ALEGRIA</div><h1>Alegria que aproxima.</h1>
     <p className="intro">Acompanhe nossos encontros, conheça as novidades da ONG e descubra como fazer parte dessa história.</p>
-    <div className="card"><h2>Seu próximo gesto de alegria</h2><p>Participe de uma ação voluntária ou conheça as campanhas de apoio ao Presente de Alegria.</p><div className="publication-links"><a className="primary" href="/eventos">Participar de um evento</a><a className="secondary" href="/ajudas">Quero ajudar</a></div></div>
+    <div className="card"><h2>Seu próximo gesto de alegria</h2><p>Participe de uma ação voluntária ou conheça as campanhas de apoio ao Presente de Alegria.</p><div className="publication-links"><a className="primary" href="/eventos/">Participar de um evento</a><a className="secondary" href="/ajudas/">Quero ajudar</a></div></div>
     <div className="card"><h2>Quer ser voluntário?</h2><p>Conheça o voluntariado e as orientações para participar no site oficial da ONG.</p><a className="secondary" href="https://presentedealegria.org.br/voluntario/" target="_blank" rel="noopener noreferrer">Conhecer o voluntariado ↗</a></div>
-    <p><a href="/noticias">Acompanhar as notícias</a> · <a href="/instalar">Instalar no celular</a></p>
+    <p><a href="/noticias/">Acompanhar as notícias</a> · <a href="/instalar/">Instalar no celular</a></p>
   </>;
   else if (route === "/instalar") content = <Install />;
   else if (route === "/privacidade")
@@ -509,8 +509,8 @@ export default function App() {
           Feito para quem espalha alegria <span className="heart">♥</span>
         </span>
         <div>
-          <a href="/sobre">Sobre o Presente</a>
-          <a href="/instalar">Instalar aplicativo</a>
+          <a href="/sobre/">Sobre o Presente</a>
+          <a href="/instalar/">Instalar aplicativo</a>
           <a href="/#/privacidade">Privacidade</a>
           <a href="/#/admin">Área da diretoria</a>
         </div>
@@ -534,7 +534,7 @@ export default function App() {
           ).map((item) => (
             <a
               key={item.path}
-              href={publicPages.some(p => p.path === item.path) ? item.path : "/#" + item.path}
+              href={publicPages.some(p => p.path === item.path) ? item.path + "/" : "/#" + item.path}
               aria-current={route === item.path ? "page" : undefined}
               onClick={(e) => { if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) { e.preventDefault(); navigate(item.path); } }}
             >

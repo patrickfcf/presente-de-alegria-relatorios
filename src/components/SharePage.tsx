@@ -3,7 +3,7 @@ import { siteOrigin } from "../../shared/seo";
 export function SharePage({ path, title }: { path: string; title: string }) {
   const [notice, setNotice] = useState("");
   return <div className="share-page"><button className="text-button" onClick={async () => {
-    const url = siteOrigin + path;
+    const url = siteOrigin + path + "/";
     try {
       if (navigator.share) await navigator.share({ title, url });
       else { await navigator.clipboard.writeText(url); setNotice("Link copiado para compartilhar."); }

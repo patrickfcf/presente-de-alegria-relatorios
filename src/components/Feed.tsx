@@ -129,7 +129,7 @@ export function EventsFeed({
       <p>
         <a
           className="text-button"
-          href={calendar ? "/eventos" : "/#/calendario"}
+          href={calendar ? "/eventos/" : "/#/calendario"}
         >
           {calendar ? "Ver próximos eventos" : "Ver calendário mensal"}
         </a>
