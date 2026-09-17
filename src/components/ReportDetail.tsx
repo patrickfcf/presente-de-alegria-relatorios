@@ -43,9 +43,7 @@ export function ReportDetail({
             <br />
             com sucesso!
           </h1>
-          <p>
-            O documento foi arquivado e já está disponível para a diretoria.
-          </p>
+          <p>O documento foi arquivado e já está disponível para a diretoria.</p>
         </div>
       )}
       <div className="card">
@@ -66,9 +64,7 @@ export function ReportDetail({
           <dd>{r.professional_role || "Não informado"}</dd>
           <dt>CPF do profissional</dt>
           <dd>
-            {r.professional_cpf
-              ? formatCpf(r.professional_cpf)
-              : "Não informado"}
+            {r.professional_cpf ? formatCpf(r.professional_cpf) : "Não informado"}
           </dd>
           <dt>Assistidos</dt>
           <dd>{r.beneficiaries ?? "Não informado"}</dd>

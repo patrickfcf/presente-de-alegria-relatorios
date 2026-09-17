@@ -8,11 +8,11 @@
 
 Leia apenas a skill relacionada à tarefa, antes de alterar a área:
 
-| Trabalho | Skill |
-|---|---|
-| UI, formulários, assinatura, acessibilidade, manifest e service worker | `.agents/skills/pda-react-pwa/SKILL.md` |
-| Schema, RLS, equipes, funções, uploads e PDF | `.agents/skills/pda-supabase-reports/SKILL.md` |
-| CI, variáveis, hospedagem e validação de release | `.agents/skills/pda-cloudflare-release/SKILL.md` |
+| Trabalho                                                               | Skill                                            |
+| ---------------------------------------------------------------------- | ------------------------------------------------ |
+| UI, formulários, assinatura, acessibilidade, manifest e service worker | `.agents/skills/pda-react-pwa/SKILL.md`          |
+| Schema, RLS, equipes, funções, uploads e PDF                           | `.agents/skills/pda-supabase-reports/SKILL.md`   |
+| CI, variáveis, hospedagem e validação de release                       | `.agents/skills/pda-cloudflare-release/SKILL.md` |
 
 Skills são instruções versionadas, não permissões de acesso nem dependências de plugins. Se a ferramenta não as descobrir automaticamente, leia o caminho indicado. Não instale ferramentas extras sem necessidade da tarefa.
 
@@ -37,3 +37,9 @@ Leia `SECURITY.md` e `docs/security.md` para mudanças sensíveis. Nunca version
 ## Marca
 
 Preserve o logo e as cores oficiais; não redesenhe a marca por iniciativa própria. Código MIT; marca e fontes seguem `THIRD_PARTY_NOTICES.md`.
+
+## Pull requests e documentação
+
+Toda nova alteração usa branch e PR para `main`; nunca publicar diretamente na principal. Use commits focados, aguarde `verify`, resolva comentários e mantenha o PR pronto para revisão. Não fazer merge sem autorização do responsável nem enfraquecer proteções.
+
+Leia `documents.md`, `architecture.md`, `design.md` e `tests.md` conforme o escopo. Execute `npm run format` e `npm run check`. Para permissões/migrations, execute o banco descartável documentado em `tests.md`. Não use segredos de produção em CI/forks. Não adicione agentes pagos ou auto-merge. Atualize a documentação junto com o código.

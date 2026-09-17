@@ -1,10 +1,4 @@
-import type {
-  Cell,
-  Membership,
-  Period,
-  Profile,
-  Report,
-} from "../../shared/report";
+import type { Cell, Membership, Period, Profile, Report } from "../../shared/report";
 import { monthLabel, todayBR } from "../../shared/report";
 import { readDraft } from "../lib/draft";
 import { Icon } from "./Icon";
@@ -35,22 +29,19 @@ export function Home({
   const mainCell =
     ownCells.find((c) =>
       memberships.some(
-        (m) =>
-          m.profile_id === profile.id && m.cell_id === c.id && m.is_default,
+        (m) => m.profile_id === profile.id && m.cell_id === c.id && m.is_default,
       ),
     ) || ownCells[0];
   const month = todayBR().slice(0, 7);
   const current = reports.filter((r) => r.visit_date.startsWith(month));
   const expected = periods.filter(
-    (p) =>
-      p.month.startsWith(month) && ownCells.some((c) => c.id === p.cell_id),
+    (p) => p.month.startsWith(month) && ownCells.some((c) => c.id === p.cell_id),
   );
   const complete =
     expected.length > 0 &&
     expected.every(
       (p) =>
-        current.filter((r) => r.cell_id === p.cell_id).length >=
-        p.expected_count,
+        current.filter((r) => r.cell_id === p.cell_id).length >= p.expected_count,
     );
   const draft = readDraft(profile.id);
   return (
@@ -65,8 +56,7 @@ export function Home({
       <p className="intro">
         {mainCell ? (
           <>
-            Sua presença faz a diferença na célula{" "}
-            <strong>{mainCell.name}</strong>.
+            Sua presença faz a diferença na célula <strong>{mainCell.name}</strong>.
           </>
         ) : (
           "Vamos levar mais alegria para perto."

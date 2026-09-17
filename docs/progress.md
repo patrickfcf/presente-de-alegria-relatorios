@@ -50,3 +50,9 @@ O responsável confirmou a Site URL de produção e apresentou um e-mail recebid
 ## Página inicial e Doação
 
 Página inicial pública na raiz com apresentação breve e quatro cartões. Logo retorna ao início; menu continua com quatro itens, sem aba Início. Minha célula passa a `/#/minha-celula`, mantendo autenticação e permissões. Ajudas foi renomeada visualmente para Doação, preservando `/ajudas/` e os links compartilhados. Metadados e sitemap incluem a página inicial.
+
+## Documentação e governança por PR
+
+Documentação de arquitetura/design/testes/index, README com Resend/Cloudflare, template de PR, CODEOWNERS, Dependabot e Prettier preparados. CI passa a testar aplicação e banco Supabase descartável, com gate `verify`. Checks locais: 43 testes, lint (dois avisos preexistentes), build e auditoria runtime sem vulnerabilidades conhecidas. O banco isolado deve ser validado no runner GitHub porque este ambiente não tem Docker.
+
+A proteção de `main` ainda depende de confirmação de identidade (sudo mode) no GitHub. Política proposta: PR obrigatório, `verify` verde, branch atualizada, conversas resolvidas, histórico linear, sem bypass de administradores, sem force push/exclusão. Não declarar ativa antes de confirmar a regra salva. Não foram alterados acessos de colaboradores, SMTP, banco de produção nem configurações pagas.

@@ -8,11 +8,7 @@ export function PublicFeed({ route }: { route: string }) {
   const [loading, setLoading] = useState(true);
   const [retry, setRetry] = useState(0);
   const kind =
-    route === "/noticias"
-      ? "news"
-      : route === "/ajudas"
-        ? "campaigns"
-        : "events";
+    route === "/noticias" ? "news" : route === "/ajudas" ? "campaigns" : "events";
   const refresh = () => {
     setLoading(true);
     setError("");

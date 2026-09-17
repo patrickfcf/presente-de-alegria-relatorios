@@ -9,7 +9,11 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "icons": "node scripts/icons.mjs"
+    "icons": "node scripts/icons.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test:rls": "bash scripts/test-rls.sh",
+    "check": "npm run format:check && npm run lint && npm test && npm run build"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "1.1.1",
@@ -32,7 +36,9 @@
     "@vitejs/plugin-react": "6.1.1",
     "jsdom": "30.1.0",
     "oxlint": "1.81.0",
+    "prettier": "3.9.7",
     "sharp": "0.35.4",
+    "supabase": "2.117.0",
     "typescript": "6.0.2",
     "vite": "8.3.0",
     "vitest": "5.0.1"

@@ -22,8 +22,7 @@ vi.mock("../supabase/functions/_shared/http.ts", () => {
     HttpError,
     cors: {},
     response: (body: unknown, status = 200) => Response.json(body, { status }),
-    limitedBody: async (req: Request) =>
-      new Uint8Array(await req.arrayBuffer()),
+    limitedBody: async (req: Request) => new Uint8Array(await req.arrayBuffer()),
     handleError: (e: unknown) =>
       Response.json(
         { error: (e as Error).message },

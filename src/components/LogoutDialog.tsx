@@ -28,8 +28,8 @@ export function LogoutDialog({
     >
       <h2 id="logout-title">Sair da sua conta?</h2>
       <p>
-        Os rascunhos deste aparelho serão removidos. Os relatórios enviados
-        continuam seguros.
+        Os rascunhos deste aparelho serão removidos. Os relatórios enviados continuam
+        seguros.
       </p>
       <div className="form-actions">
         <button autoFocus className="secondary" onClick={onClose}>

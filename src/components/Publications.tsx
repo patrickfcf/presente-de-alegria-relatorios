@@ -93,9 +93,7 @@ export function Publications({
                           : "Publicado"}{" "}
                       ·{" "}
                       {localDate(
-                        "starts_at" in item
-                          ? item.starts_at
-                          : item.published_at,
+                        "starts_at" in item ? item.starts_at : item.published_at,
                       ).replace("T", " ")}
                     </small>
                   </div>
@@ -210,8 +208,8 @@ function Editor({
         {item ? "Editar" : "Criar"} · {titles[kind]}
       </h2>
       <p className="notice">
-        Ao publicar, qualquer pessoa poderá ler este conteúdo, sem login. Use
-        apenas contatos e informações autorizados para divulgação.
+        Ao publicar, qualquer pessoa poderá ler este conteúdo, sem login. Use apenas
+        contatos e informações autorizados para divulgação.
       </p>
       <label>
         Título
@@ -259,9 +257,9 @@ function Editor({
       </label>
       {kind === "campaigns" && (
         <p className="small muted">
-          Informe o destino da ajuda e as condições da campanha. Para rifa ou
-          bingo, inclua data, local, regras e contato do organizador. Este
-          espaço divulga a ação; não vende números nem realiza sorteios.
+          Informe o destino da ajuda e as condições da campanha. Para rifa ou bingo,
+          inclua data, local, regras e contato do organizador. Este espaço divulga a
+          ação; não vende números nem realiza sorteios.
         </p>
       )}
       {kind === "events" && (
@@ -298,8 +296,8 @@ function Editor({
         </label>
       )}
       <p className="small muted">
-        Horários de Brasília. Notícias e campanhas de doação com publicação futura ficam
-        ocultas até a data indicada. Eventos publicados aparecem imediatamente.
+        Horários de Brasília. Notícias e campanhas de doação com publicação futura
+        ficam ocultas até a data indicada. Eventos publicados aparecem imediatamente.
       </p>
       <fieldset>
         <legend>
@@ -331,9 +329,7 @@ function Editor({
         <label>
           Texto do botão
           <input
-            placeholder={
-              kind === "events" ? "Inscrever-se" : "Saiba como ajudar"
-            }
+            placeholder={kind === "events" ? "Inscrever-se" : "Saiba como ajudar"}
             maxLength={60}
             value={details.action_label || ""}
             onChange={(e) => field("action_label", e.target.value)}
@@ -385,12 +381,8 @@ function Editor({
             setConfirmed(false);
           }}
         >
-          <option value="draft">
-            Rascunho — só Comunicação e administradores
-          </option>
-          <option value="published">
-            Publicado — visível a qualquer pessoa
-          </option>
+          <option value="draft">Rascunho — só Comunicação e administradores</option>
+          <option value="published">Publicado — visível a qualquer pessoa</option>
           <option value="archived">Arquivado — oculto do público</option>
         </select>
       </label>
@@ -430,8 +422,8 @@ function Editor({
             checked={confirmed}
             onChange={(e) => setConfirmed(e.target.checked)}
           />
-          Revisei o conteúdo, os contatos e os dados de participação e autorizo
-          sua divulgação pública.
+          Revisei o conteúdo, os contatos e os dados de participação e autorizo sua
+          divulgação pública.
         </label>
       )}
       {error && (

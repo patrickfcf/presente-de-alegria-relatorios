@@ -2,13 +2,13 @@
 
 Todos os perfis representam voluntários; o perfil controla responsabilidades e acesso.
 
-| Perfil | Pessoas | Relatórios | Publicações |
-|---|---|---|---|
-| Administrador | Cria/edita os outros quatro perfis; reenvia acesso; exclui acesso; vincula responsáveis e células | Todas as células, downloads e indicadores | Controle administrativo completo |
-| Diretor | Cria/edita seus coordenadores; consulta voluntários; substitui coordenador por voluntário da própria equipe | Consulta geral, pendências e comparações | Apenas leitura das publicações disponíveis |
-| Coordenador | Cria/edita/desativa e reenvia acesso de seus voluntários | Envia e consulta relatórios das células autorizadas; registra presença | Apenas leitura |
-| Voluntário individual | Próprio perfil, sem edição de permissões | Sem acesso | Eventos, calendário, notícias e ajudas públicas |
-| Comunicação e Eventos | Sem gestão de pessoas | Sem acesso a documentos, CPF ou assinatura | Cria/edita/publica/arquiva notícias, eventos e ajudas |
+| Perfil                | Pessoas                                                                                                     | Relatórios                                                             | Publicações                                           |
+| --------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------- |
+| Administrador         | Cria/edita os outros quatro perfis; reenvia acesso; exclui acesso; vincula responsáveis e células           | Todas as células, downloads e indicadores                              | Controle administrativo completo                      |
+| Diretor               | Cria/edita seus coordenadores; consulta voluntários; substitui coordenador por voluntário da própria equipe | Consulta geral, pendências e comparações                               | Apenas leitura das publicações disponíveis            |
+| Coordenador           | Cria/edita/desativa e reenvia acesso de seus voluntários                                                    | Envia e consulta relatórios das células autorizadas; registra presença | Apenas leitura                                        |
+| Voluntário individual | Próprio perfil, sem edição de permissões                                                                    | Sem acesso                                                             | Eventos, calendário, notícias e ajudas públicas       |
+| Comunicação e Eventos | Sem gestão de pessoas                                                                                       | Sem acesso a documentos, CPF ou assinatura                             | Cria/edita/publica/arquiva notícias, eventos e ajudas |
 
 Escolher uma opção na tela inicial não altera o perfil. A permissão é sempre consultada no banco.
 

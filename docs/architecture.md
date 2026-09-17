@@ -4,17 +4,17 @@ Frontend estático React/TypeScript/Vite em Cloudflare Pages; Supabase fornece A
 
 ## Modelo
 
-| Tabela | Finalidade |
-|---|---|
-| institutions | Instituições atendidas |
-| cells | Células cadastradas, instituição, período ativo e expectativa mensal (padrão 1) |
-| profiles | Conta, nome, e-mail, nome de palhaço, celular, perfil, responsável hierárquico e situação |
-| cell_memberships | Vínculos autorizados e célula padrão |
-| report_periods | Expectativa da célula em um mês; preserva o valor histórico |
-| visit_reports | Visita, profissional, indicadores, prova, estado de processamento, snapshots históricos e caminhos privados |
-| report_attendance | Presença/falta, validade da justificativa e nomes históricos dos voluntários |
-| news / events | Conteúdo interno, situação editorial e autores |
-| private.audit_events | Operações relevantes, sem conteúdo dos formulários |
+| Tabela                    | Finalidade                                                                                                  |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| institutions              | Instituições atendidas                                                                                      |
+| cells                     | Células cadastradas, instituição, período ativo e expectativa mensal (padrão 1)                             |
+| profiles                  | Conta, nome, e-mail, nome de palhaço, celular, perfil, responsável hierárquico e situação                   |
+| cell_memberships          | Vínculos autorizados e célula padrão                                                                        |
+| report_periods            | Expectativa da célula em um mês; preserva o valor histórico                                                 |
+| visit_reports             | Visita, profissional, indicadores, prova, estado de processamento, snapshots históricos e caminhos privados |
+| report_attendance         | Presença/falta, validade da justificativa e nomes históricos dos voluntários                                |
+| news / events / campaigns | Conteúdo editorial público quando liberado; rascunhos restritos e autores privados                          |
+| private.audit_events      | Operações relevantes, sem conteúdo dos formulários                                                          |
 
 Diretor → coordenadores → voluntários é representado por `profiles.manager_id`; validação ocorre em operações transacionais exclusivas do servidor. A Comunicação é independente dessa árvore. O administrador inicial é provisionado fora do formulário público.
 
@@ -23,7 +23,7 @@ Diretor → coordenadores → voluntários é representado por `profiles.manager
 Páginas públicas também têm URLs sem hash e HTML de metadados: `/sobre`, `/eventos`, `/noticias`, `/ajudas`, `/instalar`. Links públicos antigos redirecionam para essas URLs. Entrada/relatórios/admin continuam por hash. Veja `docs/seo.md`.
 
 Rotas por hash evitam configuração extra de SPA e simplificam URLs no PWA:
-`#/` entrada/home; `#/relatorios/novo`; `#/enviado/:id`; `#/eventos`; `#/calendario`; `#/noticias`; `#/admin`; `#/cadastros`; `#/publicacoes`; `#/instalar`; `#/privacidade`.
+`/` apresentação pública; `#/minha-celula` entrada privada; `#/relatorios/novo`; `#/enviado/:id`; `#/eventos`; `#/calendario`; `#/noticias`; `#/admin`; `#/cadastros`; `#/publicacoes`; `#/instalar`; `#/privacidade`.
 
 Voluntários veem Eventos/Calendário; Comunicação vê Publicações/Eventos; coordenadores e diretores têm Minha célula/Eventos/Notícias. O menu é apenas apresentação: RLS e funções aplicam a autorização.
 

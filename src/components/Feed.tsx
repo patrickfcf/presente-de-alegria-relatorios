@@ -14,22 +14,94 @@ const fmt = (date: string, options: Intl.DateTimeFormatOptions) =>
     timeZone: "America/Sao_Paulo",
     ...options,
   });
-const monthBR = (date: string) => new Intl.DateTimeFormat("sv-SE", { timeZone: "America/Sao_Paulo" }).format(new Date(date)).slice(0, 7);
-const searchable = (value: string) => value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLocaleLowerCase("pt-BR");
-function FeedFilters({ kind, search, setSearch, category, setCategory, month, setMonth, order, setOrder }: {
-  kind: "news" | "events"; search: string; setSearch: (v: string) => void;
-  category: string; setCategory: (v: string) => void; month: string; setMonth: (v: string) => void;
-  order: string; setOrder: (v: string) => void;
+const monthBR = (date: string) =>
+  new Intl.DateTimeFormat("sv-SE", { timeZone: "America/Sao_Paulo" })
+    .format(new Date(date))
+    .slice(0, 7);
+const searchable = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLocaleLowerCase("pt-BR");
+function FeedFilters({
+  kind,
+  search,
+  setSearch,
+  category,
+  setCategory,
+  month,
+  setMonth,
+  order,
+  setOrder,
+}: {
+  kind: "news" | "events";
+  search: string;
+  setSearch: (v: string) => void;
+  category: string;
+  setCategory: (v: string) => void;
+  month: string;
+  setMonth: (v: string) => void;
+  order: string;
+  setOrder: (v: string) => void;
 }) {
-  return <section aria-label="Filtros de publicações" className="feed-filters">
-    <div className="filters">
-      <label>Buscar<input type="search" value={search} placeholder={kind === "events" ? "Título ou local" : "Título ou texto"} onChange={e => setSearch(e.target.value)} /></label>
-      <label>Categoria<select value={category} onChange={e => setCategory(e.target.value)}><option value="">Todas</option>{categories[kind].map(c => <option key={c}>{c}</option>)}</select></label>
-      <label>{kind === "events" ? "Mês do evento" : "Mês da publicação"}<input type="month" value={month} onChange={e => setMonth(e.target.value)} /></label>
-      <label>Ordenar por<select value={order} onChange={e => setOrder(e.target.value)}><option value="recent">Publicações mais recentes</option><option value="oldest">Publicações mais antigas</option>{kind === "events" && <><option value="upcoming">Data do evento: próximos primeiro</option><option value="latest">Data do evento: mais recentes primeiro</option></>}</select></label>
-    </div>
-    <button className="text-button" onClick={() => {setSearch(""); setCategory(""); setMonth(""); setOrder("recent");}}>Limpar filtros</button>
-  </section>;
+  return (
+    <section aria-label="Filtros de publicações" className="feed-filters">
+      <div className="filters">
+        <label>
+          Buscar
+          <input
+            type="search"
+            value={search}
+            placeholder={kind === "events" ? "Título ou local" : "Título ou texto"}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </label>
+        <label>
+          Categoria
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="">Todas</option>
+            {categories[kind].map((c) => (
+              <option key={c}>{c}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          {kind === "events" ? "Mês do evento" : "Mês da publicação"}
+          <input
+            type="month"
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+          />
+        </label>
+        <label>
+          Ordenar por
+          <select value={order} onChange={(e) => setOrder(e.target.value)}>
+            <option value="recent">Publicações mais recentes</option>
+            <option value="oldest">Publicações mais antigas</option>
+            {kind === "events" && (
+              <>
+                <option value="upcoming">Data do evento: próximos primeiro</option>
+                <option value="latest">
+                  Data do evento: mais recentes primeiro
+                </option>
+              </>
+            )}
+          </select>
+        </label>
+      </div>
+      <button
+        className="text-button"
+        onClick={() => {
+          setSearch("");
+          setCategory("");
+          setMonth("");
+          setOrder("recent");
+        }}
+      >
+        Limpar filtros
+      </button>
+    </section>
+  );
 }
 export function NewsFeed({ news }: { news: News[] }) {
   const [open, setOpen] = useState<string | null>(null);
@@ -39,12 +111,21 @@ export function NewsFeed({ news }: { news: News[] }) {
   const [order, setOrder] = useState("recent");
   const items = news
     .filter(
-      (n) => n.status === "published" && new Date(n.published_at) <= new Date()
-      && (!category || (n.details?.category || "Comunicado") === category)
-      && (!month || monthBR(n.published_at) === month)
-      && searchable(n.title + " " + n.body + " " + (n.details?.summary || "")).includes(searchable(search.trim())),
+      (n) =>
+        n.status === "published" &&
+        new Date(n.published_at) <= new Date() &&
+        (!category || (n.details?.category || "Comunicado") === category) &&
+        (!month || monthBR(n.published_at) === month) &&
+        searchable(
+          n.title + " " + n.body + " " + (n.details?.summary || ""),
+        ).includes(searchable(search.trim())),
     )
-    .sort((a, b) => (order === "oldest" ? 1 : -1) * (Date.parse(a.published_at) - Date.parse(b.published_at)) || a.id.localeCompare(b.id));
+    .sort(
+      (a, b) =>
+        (order === "oldest" ? 1 : -1) *
+          (Date.parse(a.published_at) - Date.parse(b.published_at)) ||
+        a.id.localeCompare(b.id),
+    );
   return (
     <>
       <div className="eyebrow">NOSSA ALEGRIA EM MOVIMENTO</div>
@@ -53,8 +134,22 @@ export function NewsFeed({ news }: { news: News[] }) {
       <p className="intro">
         Novidades e recados para quem faz parte dessa história.
       </p>
-      <FeedFilters kind="news" {...{search, setSearch, category, setCategory, month, setMonth, order, setOrder}} />
-      <p role="status" className="small muted">{items.length} notícia(s)</p>
+      <FeedFilters
+        kind="news"
+        {...{
+          search,
+          setSearch,
+          category,
+          setCategory,
+          month,
+          setMonth,
+          order,
+          setOrder,
+        }}
+      />
+      <p role="status" className="small muted">
+        {items.length} notícia(s)
+      </p>
       {items.length ? (
         items.map((n) => (
           <article key={n.id} className="card news-card">
@@ -88,9 +183,15 @@ export function NewsFeed({ news }: { news: News[] }) {
       ) : (
         <div className="empty card">
           <Icon name="news" size={38} />
-          <h2>{search || category || month ? "Nenhuma notícia encontrada." : "As novidades chegam por aqui."}</h2>
+          <h2>
+            {search || category || month
+              ? "Nenhuma notícia encontrada."
+              : "As novidades chegam por aqui."}
+          </h2>
           <p>
-            {search || category || month ? "Tente outros filtros ou limpe a busca." : "Quando a equipe de comunicação publicar um comunicado, você poderá acompanhar nesta página."}
+            {search || category || month
+              ? "Tente outros filtros ou limpe a busca."
+              : "Quando a equipe de comunicação publicar um comunicado, você poderá acompanhar nesta página."}
           </p>
         </div>
       )}
@@ -109,17 +210,28 @@ export function EventsFeed({
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [order, setOrder] = useState(calendar ? "upcoming" : "recent");
-  const items = events.filter(e => e.status === "published"
-    && (calendar || past || new Date(e.ends_at || e.starts_at) >= new Date())
-    && (!month || monthBR(e.starts_at) === month)
-    && (!category || (e.details?.category || "Encontro") === category)
-    && searchable(e.title + " " + e.location + " " + e.description).includes(searchable(search.trim())))
+  const items = events
+    .filter(
+      (e) =>
+        e.status === "published" &&
+        (calendar || past || new Date(e.ends_at || e.starts_at) >= new Date()) &&
+        (!month || monthBR(e.starts_at) === month) &&
+        (!category || (e.details?.category || "Encontro") === category) &&
+        searchable(e.title + " " + e.location + " " + e.description).includes(
+          searchable(search.trim()),
+        ),
+    )
     .sort((a, b) => {
-      const difference = order === "upcoming" || order === "latest"
-        ? Date.parse(a.starts_at) - Date.parse(b.starts_at)
-        : Date.parse(a.published_at || a.starts_at) - Date.parse(b.published_at || b.starts_at);
-      return (order === "oldest" || order === "upcoming" ? 1 : -1) * difference
-        || Date.parse(a.starts_at) - Date.parse(b.starts_at) || a.id.localeCompare(b.id);
+      const difference =
+        order === "upcoming" || order === "latest"
+          ? Date.parse(a.starts_at) - Date.parse(b.starts_at)
+          : Date.parse(a.published_at || a.starts_at) -
+            Date.parse(b.published_at || b.starts_at);
+      return (
+        (order === "oldest" || order === "upcoming" ? 1 : -1) * difference ||
+        Date.parse(a.starts_at) - Date.parse(b.starts_at) ||
+        a.id.localeCompare(b.id)
+      );
     });
   return (
     <>
@@ -128,15 +240,26 @@ export function EventsFeed({
       <SharePage path="/eventos" title="Eventos do Presente de Alegria" />
       <p className="intro">Veja o que vem por aí e faça parte.</p>
       <p>
-        <a
-          className="text-button"
-          href={calendar ? "/eventos/" : "/#/calendario"}
-        >
+        <a className="text-button" href={calendar ? "/eventos/" : "/#/calendario"}>
           {calendar ? "Ver próximos eventos" : "Ver calendário mensal"}
         </a>
       </p>
-      <FeedFilters kind="events" {...{search, setSearch, category, setCategory, month, setMonth, order, setOrder}} />
-      <p role="status" className="small muted">{items.length} evento(s)</p>
+      <FeedFilters
+        kind="events"
+        {...{
+          search,
+          setSearch,
+          category,
+          setCategory,
+          month,
+          setMonth,
+          order,
+          setOrder,
+        }}
+      />
+      <p role="status" className="small muted">
+        {items.length} evento(s)
+      </p>
       <label hidden={calendar} className="check-label">
         <input
           type="checkbox"
@@ -189,9 +312,15 @@ export function EventsFeed({
       ) : (
         <div className="empty card">
           <Icon name="calendar" size={38} />
-          <h2>{search || category || month ? "Nenhum evento encontrado." : "Novos encontros em breve."}</h2>
+          <h2>
+            {search || category || month
+              ? "Nenhum evento encontrado."
+              : "Novos encontros em breve."}
+          </h2>
           <p>
-            {search || category || month ? "Tente outros filtros ou limpe a busca." : "A equipe de comunicação publicará aqui as datas, os horários e os locais dos próximos eventos."}
+            {search || category || month
+              ? "Tente outros filtros ou limpe a busca."
+              : "A equipe de comunicação publicará aqui as datas, os horários e os locais dos próximos eventos."}
           </p>
         </div>
       )}
@@ -216,7 +345,11 @@ export function PublicationLinks({
         safePublicUrl(details.contact_url) && (
           <a
             className="secondary"
-            href={event ? eventContactUrl(details.contact_url, event) : details.contact_url}
+            href={
+              event
+                ? eventContactUrl(details.contact_url, event)
+                : details.contact_url
+            }
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -246,11 +379,7 @@ function Pix({ details }: { details: PublicationDetails }) {
       </p>
       <label>
         Chave Pix
-        <input
-          readOnly
-          value={details.pix_key}
-          onFocus={(e) => e.target.select()}
-        />
+        <input readOnly value={details.pix_key} onFocus={(e) => e.target.select()} />
       </label>
       <button
         className="secondary"
@@ -266,8 +395,8 @@ function Pix({ details }: { details: PublicationDetails }) {
         Copiar chave Pix
       </button>
       <p className="small">
-        Confira o nome do favorecido no seu banco antes de confirmar. O
-        aplicativo não processa nem confirma pagamentos.
+        Confira o nome do favorecido no seu banco antes de confirmar. O aplicativo
+        não processa nem confirma pagamentos.
       </p>
       <p role="status">{notice}</p>
     </div>
@@ -297,11 +426,9 @@ export function CampaignsFeed({ campaigns }: { campaigns: Campaign[] }) {
       <label>
         Tipo de ajuda
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {["Todas", "Doação", "Pix", "Arrecadação", "Rifa", "Bingo"].map(
-            (c) => (
-              <option key={c}>{c}</option>
-            ),
-          )}
+          {["Todas", "Doação", "Pix", "Arrecadação", "Rifa", "Bingo"].map((c) => (
+            <option key={c}>{c}</option>
+          ))}
         </select>
       </label>
       <label className="check-label">
@@ -322,9 +449,7 @@ export function CampaignsFeed({ campaigns }: { campaigns: Campaign[] }) {
                 {closed ? " · Encerrada" : ""}
               </span>
               <h2>{c.title}</h2>
-              {c.details?.summary && (
-                <p className="intro">{c.details.summary}</p>
-              )}
+              {c.details?.summary && <p className="intro">{c.details.summary}</p>}
               <p className="small muted">
                 Publicado em{" "}
                 {fmt(c.published_at, {

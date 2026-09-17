@@ -18,9 +18,7 @@ Deno.serve(async (req: Request) => {
     const { db, user, profile } = await authenticate(req);
     let body: Record<string, unknown>;
     try {
-      body = JSON.parse(
-        new TextDecoder().decode(await limitedBody(req, 24000)),
-      );
+      body = JSON.parse(new TextDecoder().decode(await limitedBody(req, 24000)));
     } catch {
       throw new HttpError(400, "Dados inválidos.");
     }
@@ -29,20 +27,16 @@ Deno.serve(async (req: Request) => {
       if (!["admin", "director", "coordinator"].includes(profile.role))
         throw new HttpError(403, "Acesso restrito.");
       const month = String(body.month || "");
-      if (!/^\d{4}-\d{2}-01$/.test(month))
-        throw new HttpError(400, "Mês inválido.");
+      if (!/^\d{4}-\d{2}-01$/.test(month)) throw new HttpError(400, "Mês inválido.");
       const { error } = await db.rpc("ensure_report_periods", {
         p_actor: user.id,
         p_month: month,
       });
-      if (error)
-        throw new HttpError(400, "Não foi possível abrir esse período.");
+      if (error) throw new HttpError(400, "Não foi possível abrir esse período.");
       return response({ ok: true });
     }
     if (
-      !["admin", "director", "coordinator", "communications"].includes(
-        profile.role,
-      )
+      !["admin", "director", "coordinator", "communications"].includes(profile.role)
     )
       throw new HttpError(403, "Acesso restrito à equipe responsável.");
     if (
@@ -51,10 +45,7 @@ Deno.serve(async (req: Request) => {
       action === "save-campaign"
     ) {
       if (!["admin", "communications"].includes(profile.role))
-        throw new HttpError(
-          403,
-          "Somente a equipe de comunicação pode publicar.",
-        );
+        throw new HttpError(403, "Somente a equipe de comunicação pode publicar.");
       const isNews = action !== "save-event";
       const table =
         action === "save-campaign" ? "campaigns" : isNews ? "news" : "events";
@@ -99,13 +90,9 @@ Deno.serve(async (req: Request) => {
         if (
           body.ends_at &&
           (!Number.isFinite(Date.parse(String(body.ends_at))) ||
-            Date.parse(String(body.ends_at)) <=
-              Date.parse(String(body.starts_at)))
+            Date.parse(String(body.ends_at)) <= Date.parse(String(body.starts_at)))
         )
-          throw new HttpError(
-            400,
-            "O fim do evento deve ser posterior ao início.",
-          );
+          throw new HttpError(400, "O fim do evento deve ser posterior ao início.");
         Object.assign(data, {
           description: String(body.description).trim(),
           location: String(body.location).trim(),
@@ -132,10 +119,7 @@ Deno.serve(async (req: Request) => {
           !details.contact_url &&
           !details.pix_key
         )
-          throw new HttpError(
-            400,
-            "Informe como ajudar: link, contato ou Pix.",
-          );
+          throw new HttpError(400, "Informe como ajudar: link, contato ou Pix.");
       }
       let result;
       if (body.id) {
@@ -202,10 +186,7 @@ Deno.serve(async (req: Request) => {
       return response({ ok: true });
     }
     if (profile.role !== "admin" && action !== "save-profile")
-      throw new HttpError(
-        403,
-        "Somente administradores podem alterar cadastros.",
-      );
+      throw new HttpError(403, "Somente administradores podem alterar cadastros.");
     if (action === "save-institution") {
       if (!str(body.name, 2, 160) || typeof body.active !== "boolean")
         throw new HttpError(400, "Nome de instituição inválido.");
@@ -233,10 +214,7 @@ Deno.serve(async (req: Request) => {
         Number(body.expected_visits) > 31
       )
         throw new HttpError(400, "Confira os dados da célula.");
-      if (
-        body.reporting_end &&
-        !/^\d{4}-\d{2}-01$/.test(String(body.reporting_end))
-      )
+      if (body.reporting_end && !/^\d{4}-\d{2}-01$/.test(String(body.reporting_end)))
         throw new HttpError(400, "Mês final inválido.");
       const data = {
         name: String(body.name).trim(),
@@ -247,12 +225,7 @@ Deno.serve(async (req: Request) => {
         expected_visits: body.expected_visits,
       };
       const result = body.id
-        ? await db
-            .from("cells")
-            .update(data)
-            .eq("id", body.id)
-            .select("id")
-            .single()
+        ? await db.from("cells").update(data).eq("id", body.id).select("id").single()
         : await db.from("cells").insert(data).select("id").single();
       if (result.error)
         throw new HttpError(
@@ -289,10 +262,7 @@ Deno.serve(async (req: Request) => {
       if (body.role === "coordinator" && !UUID.test(String(body.cell_id)))
         throw new HttpError(400, "Escolha a célula padrão.");
       if (profile.role === "coordinator" && body.role !== "volunteer")
-        throw new HttpError(
-          403,
-          "Coordenadores cadastram somente voluntários.",
-        );
+        throw new HttpError(403, "Coordenadores cadastram somente voluntários.");
       if (
         ["coordinator", "volunteer"].includes(String(body.role)) &&
         !UUID.test(String(body.manager_id))

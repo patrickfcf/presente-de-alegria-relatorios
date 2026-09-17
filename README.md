@@ -8,14 +8,19 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Backend-Supabase-3ECF8E?logo=supabase&logoColor=white)
+![Cloudflare Pages](https://img.shields.io/badge/Hosting-Cloudflare_Pages-F38020?logo=cloudflare&logoColor=white)
+![Resend](https://img.shields.io/badge/Email-Resend-000000?logo=resend&logoColor=white)
 ![PWA](https://img.shields.io/badge/PWA-iOS%20%26%20Android-6437D1)
 
 [Começar](#executar) · [Contribuir](CONTRIBUTING.md) · [Segurança](SECURITY.md) · [Publicar](docs/deployment.md) · [Administrar](docs/administration.md)
 
 PWA para relatórios mensais de visita, equipes, notícias e eventos da ONG Presente de Alegria.
 
-**Site publicado: [presentedealegria.app](https://presentedealegria.app). Ativação dos acessos privados pendente.**
-O banco e as funções foram implantados no Supabase. Faltam configurar e testar e-mail de acesso, provisionar o primeiro administrador e cadastrar as células oficiais. Não coletar dados reais antes do teste de aceite descrito em `docs/deployment.md`.
+**Site publicado: [presentedealegria.app](https://presentedealegria.app).**
+
+Páginas públicas, backend, primeiro administrador e envio de código por e-mail estão configurados. O responsável confirmou recebimento do OTP via Resend. O aceite completo de login → relatório → PDF, a instalação física e o cadastro oficial das células ainda precisam ser concluídos. A personalização do e-mail é aplicada no painel Supabase, não pelo deploy do site.
+
+[Arquitetura](architecture.md) · [Design](design.md) · [Documentação](documents.md) · [Testes](tests.md) · [Fluxo de PR](docs/contributing-workflow.md)
 
 ## Executar
 
@@ -31,6 +36,7 @@ npm run dev
 npm test
 npm run lint
 npm run build
+npm run format:check
 ```
 
 `npm run preview` serve o build de produção, incluindo o service worker. O PWA exige HTTPS em produção. `npm run icons` regenera favicon, Apple touch icon e ícones Android a partir de `assets/branding/app-icon.jpg`, imagem fornecida pelo responsável. O logo do cabeçalho e do PDF é independente. As URLs dos ícones incluem o hash da imagem para renovar o cache.
@@ -46,13 +52,13 @@ npm run build
 - Assinatura na tela OU até três PDFs/JPGs/PNGs assinados em papel.
 - PDF gerado no servidor, armazenado com os originais em bucket privado; download individual e ZIP mensal.
 - Painel de pendências e comparação de células; filtros por mês, célula, coordenador e situação.
-- Eventos, Notícias e Ajudas públicos, sem login; publicação restrita à Comunicação e administradores. Calendário mensal, contatos e links oficiais; campanhas com prazo e Pix opcional.
+- Eventos, Notícias e Doação públicos, sem login; publicação restrita à Comunicação e administradores. Calendário mensal, contatos e links oficiais; campanhas com prazo e Pix opcional.
 - Manifest, ícones oficiais, Apple touch icon, service worker, instruções de instalação e QR da URL configurada.
 
 ## Arquitetura
 
 React + TypeScript + Vite → Supabase Auth/PostgreSQL/RLS/Storage/Edge Functions.
-Cloudflare Pages publica a aplicação estática a partir de `main` no GitHub. Não há servidor extra.
+Cloudflare Pages publica a aplicação estática a partir de `main` no GitHub após merge de PR. Supabase envia códigos pelo SMTP do Resend. Não há servidor extra.
 
 - `src/`: interface e integração com o Supabase.
 - `shared/`: validação e geração de PDF compartilhadas com as funções.
@@ -72,13 +78,13 @@ O frontend recebe somente `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` e
 
 Todos são voluntários; o perfil cadastrado determina as permissões. A escolha na primeira tela apenas orienta a navegação.
 
-| Perfil | Responsabilidade |
-|---|---|
-| Administrador | Gerencia acessos, células, equipes, relatórios e publicações |
-| Diretor de célula | Gerencia seus coordenadores, consulta voluntários e acompanha relatórios |
-| Coordenador de célula | Gerencia sua equipe, registra chamada e envia relatórios |
-| Voluntário individual | Consulta eventos e calendário |
-| Comunicação e Eventos | Publica notícias e eventos; não acessa documentos das instituições |
+| Perfil                | Responsabilidade                                                         |
+| --------------------- | ------------------------------------------------------------------------ |
+| Administrador         | Gerencia acessos, células, equipes, relatórios e publicações             |
+| Diretor de célula     | Gerencia seus coordenadores, consulta voluntários e acompanha relatórios |
+| Coordenador de célula | Gerencia sua equipe, registra chamada e envia relatórios                 |
+| Voluntário individual | Consulta eventos e calendário                                            |
+| Comunicação e Eventos | Publica notícias e eventos; não acessa documentos das instituições       |
 
 Veja os limites completos em [Administração](docs/administration.md). Nome, cargo, CPF e assinatura no relatório pertencem ao **profissional da instituição**; o coordenador é o responsável pelo envio.
 
@@ -106,8 +112,24 @@ O código e a documentação originais são distribuídos sob a [licença MIT](L
 
 ## Publicações abertas
 
-Eventos, Notícias, Ajudas e Calendário não exigem conta. Minha célula e a gestão de publicações exigem login. Rascunhos, arquivados e notícias/campanhas agendadas não são expostos. Contatos publicados são públicos: a equipe confirma a divulgação antes de salvar. Ajudas divulga campanhas e canais oficiais, sem processar pagamentos, vender números ou realizar sorteios.
+Eventos, Notícias, Doação e Calendário não exigem conta. Minha célula e a gestão de publicações exigem login. Rascunhos, arquivados e notícias/campanhas agendadas não são expostos. Contatos publicados são públicos: a equipe confirma a divulgação antes de salvar. A área Doação divulga campanhas e canais oficiais, sem processar pagamentos, vender números ou realizar sorteios.
 
 ### Descoberta e divulgação
 
-Páginas públicas: [Sobre](https://presentedealegria.app/sobre), [Eventos](https://presentedealegria.app/eventos), [Notícias](https://presentedealegria.app/noticias) e [Ajudas](https://presentedealegria.app/ajudas). Metadados sociais, sitemap e limites de indexação estão em [SEO e divulgação](docs/seo.md).
+Páginas públicas: [Sobre](https://presentedealegria.app/sobre), [Eventos](https://presentedealegria.app/eventos), [Notícias](https://presentedealegria.app/noticias) e [Doação](https://presentedealegria.app/ajudas). Metadados sociais, sitemap e limites de indexação estão em [SEO e divulgação](docs/seo.md).
+
+## E-mails e hospedagem
+
+| Serviço             | Configuração                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Cloudflare Pages    | Branch `main`, Node 24, build `npm run build`, saída `dist`                                                   |
+| Domínio de produção | `https://presentedealegria.app`                                                                               |
+| Supabase Auth       | Site URL de produção e template Magic Link com `{{ .Token }}`                                                 |
+| Resend SMTP         | `smtp.resend.com`, porta `465`, usuário `resend`; senha é uma API key de envio restrita ao domínio verificado |
+| Remetente           | Presente de Alegria; endereço no domínio de envio verificado                                                  |
+
+Guardar a credencial Resend somente no SMTP do Supabase e no gerenciador de segredos. Ela nunca é uma variável `VITE_*`. Preservar os registros de recebimento do iCloud ao configurar o domínio de envio. Ver [deploy](docs/deployment.md) para passos e limites.
+
+## Mudanças por pull request
+
+Criar branch → abrir PR → checks verdes → revisão do mantenedor → Squash and merge → deploy Pages. A proteção de `main` exige o check `verify`. O CI não tem segredos de produção. Dependabot abre propostas de atualização; agentes seguem [AGENTS.md](AGENTS.md). Leia a [política completa](docs/contributing-workflow.md).

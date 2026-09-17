@@ -24,8 +24,7 @@ export async function authenticate(req: Request) {
   const serviceKey = secretKeys
     ? JSON.parse(secretKeys).default
     : Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  if (!serviceKey)
-    throw new HttpError(503, "Serviço temporariamente indisponível.");
+  if (!serviceKey) throw new HttpError(503, "Serviço temporariamente indisponível.");
   const db = createClient(Deno.env.get("SUPABASE_URL")!, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });

@@ -238,10 +238,7 @@ export async function generateReportPdf(
           throw new Error(
             "Os comprovantes devem ter, ao todo, no máximo 20 páginas.",
           );
-        for (const p of await doc.copyPages(
-          original,
-          original.getPageIndices(),
-        ))
+        for (const p of await doc.copyPages(original, original.getPageIndices()))
           doc.addPage(p);
       } else {
         const photo =

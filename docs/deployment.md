@@ -16,11 +16,11 @@
 5. Variável de build `NODE_VERSION`: `24`.
 6. Variáveis do aplicativo:
 
-| Nome | Valor |
-|---|---|
-| `VITE_SUPABASE_URL` | `https://rzlopgtfuutnuceaoroh.supabase.co` |
+| Nome                            | Valor                                                            |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `VITE_SUPABASE_URL`             | `https://rzlopgtfuutnuceaoroh.supabase.co`                       |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | Copiar a chave **Publishable** em Supabase → Settings → API Keys |
-| `VITE_PRODUCTION_URL` | `https://presentedealegria.app` |
+| `VITE_PRODUCTION_URL`           | `https://presentedealegria.app`                                  |
 
 A chave Publishable pode estar no frontend; **nunca usar Secret ou service_role**. Não copiar senhas/tokens para conversas, README ou GitHub.
 
@@ -90,3 +90,9 @@ Renomear o repositório não muda o identificador do projeto Supabase. Clones ex
 ## Corrigir e-mail com link para localhost
 
 Um e-mail entregue não confirma que o fluxo OTP foi configurado. No projeto, abrir **Authentication → URL Configuration** e salvar `https://presentedealegria.app` como **Site URL**. Em **Authentication → Emails → Magic Link**, definir assunto `Seu código de acesso · Presente de Alegria` e substituir o corpo pelo arquivo `supabase/templates/magic-link.html`. Ele usa `{{ .Token }}`, não `{{ .ConfirmationURL }}`. Salvar e solicitar um código novo no app; links antigos não são corrigidos retroativamente. A configuração de templates no repositório não é aplicada automaticamente ao projeto hospedado. O conector disponível não oferece edição de Auth e o navegador foi bloqueado por CAPTCHA; a configuração precisa ser concluída no painel. Nunca enviar prints de URLs com tokens.
+
+## Resend e fluxo de release
+
+O envio de OTP foi confirmado pelo responsável usando Resend via SMTP. O domínio de envio deve estar verificado com os registros DNS informados pelo Resend, preservando MX/TXT do iCloud. Host `smtp.resend.com`, porta `465`, usuário `resend`, senha API key com Sending access restrita ao domínio de envio. Não publicar a chave ou colocar em variáveis VITE.
+
+Cloudflare Pages acompanha somente a branch de produção `main`; mudanças entram por PR conforme `docs/contributing-workflow.md`. Previews não devem receber credenciais ou dados privados de produção. O workflow Quality testa código e banco local; não aplica migrations no projeto real nem atualiza templates de e-mail.

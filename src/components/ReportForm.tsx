@@ -51,9 +51,8 @@ export function ReportForm({
   const [initial] = useState(() => readDraft(profile.id));
   const [id] = useState(() => initial?.id || crypto.randomUUID());
   const defaultCell =
-    memberships.find(
-      (m) => m.profile_id === profile.id && m.active && m.is_default,
-    )?.cell_id ||
+    memberships.find((m) => m.profile_id === profile.id && m.active && m.is_default)
+      ?.cell_id ||
     available[0]?.id ||
     "";
   const [form, setForm] = useState<ReportInput>(() => ({
@@ -105,10 +104,7 @@ export function ReportForm({
     form.local_team,
   ]);
   useEffect(() => {
-    const timer = setTimeout(
-      () => setSaved(saveDraft(profile.id, form, id)),
-      500,
-    );
+    const timer = setTimeout(() => setSaved(saveDraft(profile.id, form, id)), 500);
     return () => clearTimeout(timer);
   }, [form, profile.id, id]);
   useEffect(() => {
@@ -332,20 +328,17 @@ export function ReportForm({
                 <h2>Chamada dos voluntários</h2>
                 <p className="small">
                   Registre quem compareceu à visita e se as faltas tiveram
-                  justificativa válida. Não inclua informações médicas ou
-                  detalhes pessoais.
+                  justificativa válida. Não inclua informações médicas ou detalhes
+                  pessoais.
                 </p>
                 {!roster.length ? (
                   <p className="notice">
                     Nenhum voluntário individual ativo vinculado a esta célula.
-                    Cadastre a equipe em Minha equipe antes de registrar a
-                    presença.
+                    Cadastre a equipe em Minha equipe antes de registrar a presença.
                   </p>
                 ) : (
                   roster.map((p) => {
-                    const a = form.attendance.find(
-                      (v) => v.volunteer_id === p.id,
-                    );
+                    const a = form.attendance.find((v) => v.volunteer_id === p.id);
                     return (
                       <label key={p.id}>
                         {p.display_name}
@@ -402,8 +395,8 @@ export function ReportForm({
               <>
                 <h2>Dados do profissional da instituição</h2>
                 <p className="small">
-                  Preencha os dados da pessoa responsável pela instituição que
-                  vai assinar o relatório.
+                  Preencha os dados da pessoa responsável pela instituição que vai
+                  assinar o relatório.
                 </p>
                 <label>
                   Nome do profissional
@@ -412,9 +405,7 @@ export function ReportForm({
                     maxLength={100}
                     autoComplete="off"
                     value={form.professional_name}
-                    onChange={(e) =>
-                      update("professional_name", e.target.value)
-                    }
+                    onChange={(e) => update("professional_name", e.target.value)}
                     {...inputProps("professional_name")}
                   />
                   {fieldError("professional_name")}
@@ -424,9 +415,7 @@ export function ReportForm({
                   <input
                     maxLength={100}
                     value={form.professional_role}
-                    onChange={(e) =>
-                      update("professional_role", e.target.value)
-                    }
+                    onChange={(e) => update("professional_role", e.target.value)}
                   />
                 </label>
                 <label>
@@ -438,10 +427,7 @@ export function ReportForm({
                     maxLength={14}
                     value={formatCpf(form.professional_cpf)}
                     onChange={(e) =>
-                      update(
-                        "professional_cpf",
-                        e.target.value.replace(/\D/g, ""),
-                      )
+                      update("professional_cpf", e.target.value.replace(/\D/g, ""))
                     }
                     {...inputProps("professional_cpf")}
                   />
@@ -450,8 +436,8 @@ export function ReportForm({
                 <hr />
                 <h2>Indicadores de atendimento</h2>
                 <p className="small">
-                  Se não souber uma quantidade, deixe em branco. Zero significa
-                  que não houve pessoas nessa categoria.
+                  Se não souber uma quantidade, deixe em branco. Zero significa que
+                  não houve pessoas nessa categoria.
                 </p>
                 {countFields.map(([key, label]) => (
                   <label key={key}>
@@ -543,9 +529,9 @@ export function ReportForm({
                 ) : (
                   <>
                     <p>
-                      Fotografe ou digitalize a folha assinada pelo profissional
-                      da instituição. Inclua toda a página, com os dados e a
-                      assinatura legíveis.
+                      Fotografe ou digitalize a folha assinada pelo profissional da
+                      instituição. Inclua toda a página, com os dados e a assinatura
+                      legíveis.
                     </p>
                     <label className="upload-zone">
                       <Icon name="file" size={32} />
@@ -560,9 +546,7 @@ export function ReportForm({
                             selected.length > 3 ||
                             selected.some((f) => f.size > 5 * 1024 * 1024)
                           ) {
-                            setError(
-                              "Escolha até 3 arquivos, com até 5 MB cada.",
-                            );
+                            setError("Escolha até 3 arquivos, com até 5 MB cada.");
                             e.target.value = "";
                             setFiles([]);
                           } else {
@@ -573,8 +557,8 @@ export function ReportForm({
                       />
                     </label>
                     <p className="small muted">
-                      PDF, JPG ou PNG · até 3 arquivos de 5 MB · PDF sem senha,
-                      até 20 páginas no total.
+                      PDF, JPG ou PNG · até 3 arquivos de 5 MB · PDF sem senha, até
+                      20 páginas no total.
                     </p>
                     <ul>
                       {files.map((f, i) => (
@@ -633,15 +617,9 @@ export function ReportForm({
                   </dd>
                   <dt>Presença da equipe</dt>
                   <dd>
-                    {
-                      form.attendance.filter((a) => a.status === "present")
-                        .length
-                    }{" "}
+                    {form.attendance.filter((a) => a.status === "present").length}{" "}
                     presente(s) ·{" "}
-                    {
-                      form.attendance.filter((a) => a.status === "absent")
-                        .length
-                    }{" "}
+                    {form.attendance.filter((a) => a.status === "absent").length}{" "}
                     falta(s)
                   </dd>
                   <dt>Responsável pelo envio</dt>
@@ -655,8 +633,8 @@ export function ReportForm({
                   />
                 ) : (
                   <p>
-                    <Icon name="file" /> {files.length} comprovante(s)
-                    assinado(s) em papel.
+                    <Icon name="file" /> {files.length} comprovante(s) assinado(s) em
+                    papel.
                   </p>
                 )}
                 <div className="declaration">{DECLARATION}</div>
@@ -674,8 +652,8 @@ export function ReportForm({
                 </label>
                 {fieldError("accepted")}
                 <p className="small muted">
-                  Após o envio, o relatório será arquivado e não poderá ser
-                  editado nesta tela.
+                  Após o envio, o relatório será arquivado e não poderá ser editado
+                  nesta tela.
                 </p>
               </>
             )}
