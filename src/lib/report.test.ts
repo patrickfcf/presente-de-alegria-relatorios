@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  attendanceTotal,
-  parseCount,
-  validCpf,
-  validVisitTimes,
-} from "./report";
+import { attendanceTotal, parseCount, validCpf, validVisitTimes } from "./report";
 
 describe("attendance", () => {
   it("keeps unknown distinct from zero", () => {

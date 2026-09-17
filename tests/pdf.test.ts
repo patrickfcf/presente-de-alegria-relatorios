@@ -39,25 +39,20 @@ it("generates a formal cover and appends every original PDF page", async () => {
   expect(result.getPage(0).getWidth()).toBeCloseTo(595.28);
 });
 it("embeds a PNG signature in the report and preserves official branding", async () => {
-  const bytes = await generateReportPdf(
-    { ...data, signature_method: "canvas" },
-    [
-      {
-        type: "image/png",
-        bytes: readFileSync("public/logo.png"),
-        label: "Synthetic image fixture",
-      },
-    ],
-  );
+  const bytes = await generateReportPdf({ ...data, signature_method: "canvas" }, [
+    {
+      type: "image/png",
+      bytes: readFileSync("public/logo.png"),
+      label: "Synthetic image fixture",
+    },
+  ]);
   const result = await PDFDocument.load(bytes);
   expect(result.getPageCount()).toBe(1);
   expect(result.getAuthor()).toBe("Presente de Alegria");
   expect(bytes.byteLength).toBeGreaterThan(10000);
 });
 it("rejects disguised files, corrupt PDFs and documents beyond the page limit", async () => {
-  expect(() =>
-    detectType(new TextEncoder().encode("<html>bad</html>")),
-  ).toThrow();
+  expect(() => detectType(new TextEncoder().encode("<html>bad</html>"))).toThrow();
   await expect(
     generateReportPdf(data, [
       {

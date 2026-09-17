@@ -25,11 +25,8 @@ const roleNames: Record<Role, string> = {
   volunteer: "Voluntário individual",
 };
 export function Registry(props: Props) {
-  const { profile, profiles, cells, institutions, memberships, onRefresh } =
-    props;
-  const [kind, setKind] = useState<"people" | "cells" | "institutions">(
-    "people",
-  );
+  const { profile, profiles, cells, institutions, memberships, onRefresh } = props;
+  const [kind, setKind] = useState<"people" | "cells" | "institutions">("people");
   const [edit, setEdit] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
@@ -155,15 +152,12 @@ export function Registry(props: Props) {
                 : "Substituir coordenador"}
           </h2>
           <p>
-            <strong>
-              {profiles.find((p) => p.id === action.id)?.display_name}
-            </strong>
+            <strong>{profiles.find((p) => p.id === action.id)?.display_name}</strong>
           </p>
           {action.kind === "delete-account" ? (
             <p>
-              A pessoa perderá o acesso. Os relatórios e registros de presença
-              serão preservados. Responsáveis precisam ter a equipe reatribuída
-              primeiro.
+              A pessoa perderá o acesso. Os relatórios e registros de presença serão
+              preservados. Responsáveis precisam ter a equipe reatribuída primeiro.
             </p>
           ) : action.kind === "reset-login" ? (
             <p>
@@ -352,11 +346,8 @@ export function Registry(props: Props) {
                     <div>
                       <strong>{c.name}</strong>
                       <small>
-                        {
-                          institutions.find((i) => i.id === c.institution_id)
-                            ?.name
-                        }{" "}
-                        · {c.active ? "Ativa" : "Desativada"}
+                        {institutions.find((i) => i.id === c.institution_id)?.name} ·{" "}
+                        {c.active ? "Ativa" : "Desativada"}
                       </small>
                     </div>
                     <button className="secondary" onClick={() => setEdit(c.id)}>
@@ -418,8 +409,7 @@ function RegistryEditor({
   const [clown, setClown] = useState(person?.clown_name || "");
   const [phone, setPhone] = useState(person?.phone || "");
   const [role, setRole] = useState<Role>(
-    person?.role ||
-      (profile.role === "coordinator" ? "volunteer" : "coordinator"),
+    person?.role || (profile.role === "coordinator" ? "volunteer" : "coordinator"),
   );
   const [manager, setManager] = useState(
     person?.manager_id || (profile.role === "admin" ? "" : profile.id),
@@ -453,8 +443,7 @@ function RegistryEditor({
       let payload: Record<string, unknown>;
       if (kind === "people") {
         let digits = phone.replace(/\D/g, "");
-        if (digits.length === 10 || digits.length === 11)
-          digits = "55" + digits;
+        if (digits.length === 10 || digits.length === 11) digits = "55" + digits;
         payload = {
           action: "save-profile",
           id,
@@ -465,9 +454,7 @@ function RegistryEditor({
           role,
           active,
           cell_id: cellId,
-          manager_id: ["director", "communications"].includes(role)
-            ? null
-            : manager,
+          manager_id: ["director", "communications"].includes(role) ? null : manager,
         };
       } else if (kind === "cells")
         payload = {
@@ -528,8 +515,8 @@ function RegistryEditor({
             />
           </label>
           <p className="small muted">
-            O acesso será enviado ao e-mail cadastrado. A pessoa entra com um
-            código, sem precisar memorizar senha.
+            O acesso será enviado ao e-mail cadastrado. A pessoa entra com um código,
+            sem precisar memorizar senha.
           </p>
           {profile.role === "admin" && (
             <label>
@@ -667,8 +654,8 @@ function RegistryEditor({
             </label>
           </div>
           <p className="notice">
-            Uma visita esperada por mês. O coordenador informa a data efetiva e
-            a presença da equipe após cada visita.
+            Uma visita esperada por mês. O coordenador informa a data efetiva e a
+            presença da equipe após cada visita.
           </p>
         </>
       )}
@@ -686,8 +673,8 @@ function RegistryEditor({
       </label>
       {!active && (
         <p className="small warning-text">
-          O histórico será preservado. Para desativar um responsável, reatribua
-          a equipe primeiro.
+          O histórico será preservado. Para desativar um responsável, reatribua a
+          equipe primeiro.
         </p>
       )}
       {error && (

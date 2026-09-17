@@ -41,9 +41,7 @@ export function parseCount(value: string): number | null {
 export function attendanceTotal(values: readonly (number | null)[]) {
   if (
     values.length !== 3 ||
-    values.some(
-      (n) => n !== null && (!Number.isInteger(n) || n < 0 || n > 1000000),
-    )
+    values.some((n) => n !== null && (!Number.isInteger(n) || n < 0 || n > 1000000))
   )
     throw new Error("Indicadores inválidos.");
   const known = values.filter((n): n is number => n !== null);
@@ -76,8 +74,7 @@ export function validVisitTimes(a: string, b: string) {
   return valid(a) && valid(b) && b > a;
 }
 export function validateReport(input: unknown): Record<string, string> {
-  if (!input || typeof input !== "object")
-    return { form: "Formulário inválido." };
+  if (!input || typeof input !== "object") return { form: "Formulário inválido." };
   const f = input as Record<string, unknown>;
   const errors: Record<string, string> = {};
   if (typeof f.cell_id !== "string" || !UUID.test(f.cell_id))
@@ -96,11 +93,7 @@ export function validateReport(input: unknown): Record<string, string> {
     !validVisitTimes(f.start_time, f.end_time)
   )
     errors.end_time = "O horário final deve ser posterior ao inicial.";
-  for (const key of [
-    "professional_name",
-    "professional_role",
-    "professional_cpf",
-  ])
+  for (const key of ["professional_name", "professional_role", "professional_cpf"])
     if (typeof f[key] !== "string") errors[key] = "Valor inválido.";
   if (
     typeof f.professional_name === "string" &&
@@ -108,10 +101,7 @@ export function validateReport(input: unknown): Record<string, string> {
   )
     errors.professional_name =
       "Informe o nome do profissional da instituição (2 a 100 caracteres).";
-  if (
-    typeof f.professional_role === "string" &&
-    f.professional_role.length > 100
-  )
+  if (typeof f.professional_role === "string" && f.professional_role.length > 100)
     errors.professional_role = "Use até 100 caracteres.";
   if (
     typeof f.professional_cpf === "string" &&
@@ -244,10 +234,10 @@ export type Event = {
   status: "draft" | "published" | "archived";
 };
 export function monthLabel(month: string) {
-  return new Date(month.slice(0, 7) + "-01T12:00:00").toLocaleDateString(
-    "pt-BR",
-    { month: "long", year: "numeric" },
-  );
+  return new Date(month.slice(0, 7) + "-01T12:00:00").toLocaleDateString("pt-BR", {
+    month: "long",
+    year: "numeric",
+  });
 }
 
 export type Attendance = AttendanceInput & {

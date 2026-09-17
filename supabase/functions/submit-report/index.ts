@@ -6,11 +6,7 @@ import {
   limitedBody,
   handleError,
 } from "../_shared/http.ts";
-import {
-  normalizeReport,
-  validateReport,
-  UUID,
-} from "../../../shared/report.ts";
+import { normalizeReport, validateReport, UUID } from "../../../shared/report.ts";
 import type { ReportInput } from "../../../shared/report.ts";
 import { generateReportPdf, detectType } from "../../../shared/pdf.ts";
 import type { Evidence } from "../../../shared/pdf.ts";
@@ -57,11 +53,7 @@ Deno.serve(async (req: Request) => {
         .map((n) => n.toString(16).padStart(2, "0"))
         .join("");
     for (const [i, file] of files.entries()) {
-      if (
-        !(file instanceof File) ||
-        file.size < 20 ||
-        file.size > 5 * 1024 * 1024
-      )
+      if (!(file instanceof File) || file.size < 20 || file.size > 5 * 1024 * 1024)
         throw new HttpError(400, "Cada comprovante deve ter até 5 MB.");
       const b = new Uint8Array(await file.arrayBuffer());
       total += b.length;
@@ -89,10 +81,7 @@ Deno.serve(async (req: Request) => {
         evidence[0].type !== "image/png" ||
         evidence[0].bytes.length > 512000)
     )
-      throw new HttpError(
-        400,
-        "Assinatura inválida. Limpe e assine novamente.",
-      );
+      throw new HttpError(400, "Assinatura inválida. Limpe e assine novamente.");
     const contentHash = await hash(
       new TextEncoder().encode(JSON.stringify({ input, hashes })),
     );
@@ -119,13 +108,11 @@ Deno.serve(async (req: Request) => {
                   : "Não foi possível autorizar esse envio. Confira sua célula e a data da visita.",
       );
     }
-    if (r.status === "submitted")
-      return response({ id: r.id, submitted: true });
+    if (r.status === "submitted") return response({ id: r.id, submitted: true });
     const prefix = `${r.cell_id}/${r.id}/${r.lease_token}/`;
     const uploaded: string[] = [];
     cleanup = async () => {
-      if (uploaded.length)
-        await db.storage.from("visit-reports").remove(uploaded);
+      if (uploaded.length) await db.storage.from("visit-reports").remove(uploaded);
       await db
         .from("visit_reports")
         .update({ status: "failed", lease_until: null })
@@ -176,10 +163,7 @@ Deno.serve(async (req: Request) => {
         cacheControl: "0",
       });
     if (pdfError)
-      throw new HttpError(
-        503,
-        "Não foi possível arquivar o PDF. Tente novamente.",
-      );
+      throw new HttpError(503, "Não foi possível arquivar o PDF. Tente novamente.");
     uploaded.push(pdfPath);
     const { error: finalError } = await db.rpc("finalize_report", {
       p_actor: user.id,

@@ -1,12 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, it, expect, vi } from "vitest";
-import {
-  cleanup,
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react";
+import { cleanup, render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 import { ReportForm } from "../src/components/ReportForm";
@@ -135,9 +129,7 @@ it("completes paper workflow with institutional professional and attendance, aft
     "12",
   );
   await userEvent.click(screen.getByRole("button", { name: "Continuar" }));
-  await userEvent.click(
-    screen.getByLabelText("Enviar documento assinado em papel"),
-  );
+  await userEvent.click(screen.getByLabelText("Enviar documento assinado em papel"));
   const file = new File(["%PDF-synthetic"], "teste.pdf", {
     type: "application/pdf",
   });
@@ -151,9 +143,7 @@ it("completes paper workflow with institutional professional and attendance, aft
     }),
   ).toBeInTheDocument();
   await userEvent.click(screen.getByLabelText(/Conferi os dados/));
-  await userEvent.click(
-    screen.getByRole("button", { name: "Enviar relatório" }),
-  );
+  await userEvent.click(screen.getByRole("button", { name: "Enviar relatório" }));
   await waitFor(() => expect(onSuccess).toHaveBeenCalledWith("report-test"));
   const submitted = JSON.parse(api.invoke.mock.calls[0][1].get("report"));
   expect(submitted.professional_name).toBe("Profissional da instituição");

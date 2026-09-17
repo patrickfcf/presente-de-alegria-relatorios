@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import type {
-  Cell,
-  Period,
-  Profile,
-  Report,
-  Membership,
-} from "../../shared/report";
+import type { Cell, Period, Profile, Report, Membership } from "../../shared/report";
 import { attendanceTotal, monthLabel, todayBR } from "../../shared/report";
 import { admin, rows, reportBlob, downloadBlob } from "../lib/api";
 import { Icon } from "./Icon";
@@ -127,10 +121,7 @@ export function AdminDashboard({
           Cadastros
         </button>
         {canPublish && (
-          <button
-            className="secondary"
-            onClick={() => onNavigate("/publicacoes")}
-          >
+          <button className="secondary" onClick={() => onNavigate("/publicacoes")}>
             <Icon name="news" />
             Notícias e eventos
           </button>
@@ -151,10 +142,7 @@ export function AdminDashboard({
         </label>
         <label>
           Célula
-          <select
-            value={cellFilter}
-            onChange={(e) => setCellFilter(e.target.value)}
-          >
+          <select value={cellFilter} onChange={(e) => setCellFilter(e.target.value)}>
             <option value="">Todas as células</option>
             {cells.map((c) => (
               <option key={c.id} value={c.id}>
@@ -209,18 +197,14 @@ export function AdminDashboard({
             </div>
             <div>
               <strong>{people.toLocaleString("pt-BR")}</strong>
-              <span>
-                {incomplete ? "Pessoas informadas*" : "Pessoas atendidas"}
-              </span>
+              <span>{incomplete ? "Pessoas informadas*" : "Pessoas atendidas"}</span>
             </div>
           </div>
           <p className="small muted">
             Somatório dos atendimentos informados, sem deduplicar pessoas entre
             visitas.{" "}
             {incomplete ? "* Há relatórios com quantidades incompletas." : ""}
-            {filteredReports.some((r) => r.estimates)
-              ? " Inclui estimativas."
-              : ""}
+            {filteredReports.some((r) => r.estimates) ? " Inclui estimativas." : ""}
           </p>
           <div className="section-title">
             <h2>{monthLabel(month)}</h2>
@@ -237,16 +221,14 @@ export function AdminDashboard({
             <div className="empty card">
               <h3>Nenhuma célula neste filtro.</h3>
               <p>
-                Cadastre as células e confira o início do período de prestação
-                de contas.
+                Cadastre as células e confira o início do período de prestação de
+                contas.
               </p>
             </div>
           ) : (
             <div className="table-wrap">
               <table>
-                <caption className="sr-only">
-                  Situação mensal por célula
-                </caption>
+                <caption className="sr-only">Situação mensal por célula</caption>
                 <thead>
                   <tr>
                     <th>Célula</th>

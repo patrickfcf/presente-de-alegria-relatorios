@@ -43,19 +43,13 @@ export function Entry() {
       <p>Todos somos voluntários. Escolha como você participa.</p>
       <div className="entry-options">
         {choices.map(([value, label]) => (
-          <button
-            className="secondary"
-            key={value}
-            onClick={() => choose(value)}
-          >
+          <button className="secondary" key={value} onClick={() => choose(value)}>
             <span>{label}</span>
             <Icon name="arrow" size={20} />
           </button>
         ))}
       </div>
-      <p className="small muted">
-        Seu acesso será confirmado pelo cadastro da ONG.
-      </p>
+      <p className="small muted">Seu acesso será confirmado pelo cadastro da ONG.</p>
       <button className="text-button small" onClick={() => choose("admin")}>
         Acesso de administrador
       </button>

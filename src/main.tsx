@@ -5,9 +5,8 @@ import "./lib/install";
 import App from "./App.tsx";
 import { publicPages, publicPath } from "../shared/seo";
 // Preserve shared legacy links while giving public pages their own canonical URL.
-const legacyPage = publicPages.find(p => location.hash === "#" + p.path);
+const legacyPage = publicPages.find((p) => location.hash === "#" + p.path);
 if (legacyPage) location.replace(publicPath(legacyPage.path) + location.search);
-
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

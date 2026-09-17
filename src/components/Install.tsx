@@ -9,7 +9,11 @@ export function Install() {
     window.matchMedia("(display-mode: standalone)").matches,
   );
   const configuredUrl = import.meta.env.VITE_PRODUCTION_URL as string | undefined;
-  const production = !configuredUrl || configuredUrl.replace(/\/$/, "") === "https://presentedealegria-app.pages.dev" ? "https://presentedealegria.app" : configuredUrl;
+  const production =
+    !configuredUrl ||
+    configuredUrl.replace(/\/$/, "") === "https://presentedealegria-app.pages.dev"
+      ? "https://presentedealegria.app"
+      : configuredUrl;
   useEffect(() => {
     const listener = () => setPrompt(getInstallPrompt());
     const done = () => {
@@ -56,9 +60,7 @@ export function Install() {
         <br />
         sua tela inicial.
       </h1>
-      <p className="intro">
-        Acesse os relatórios, notícias e eventos com um toque.
-      </p>
+      <p className="intro">Acesse os relatórios, notícias e eventos com um toque.</p>
       {installed ? (
         <p className="badge success">✓ Você já está usando o aplicativo</p>
       ) : (

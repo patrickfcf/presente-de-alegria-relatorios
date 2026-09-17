@@ -1,11 +1,4 @@
-import {
-  lazy,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import type {
   Campaign,
@@ -72,7 +65,9 @@ export default function App() {
   const [authReady, setAuthReady] = useState(!configured);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [data, setData] = useState(EMPTY);
-  const [route, setRoute] = useState(location.hash.slice(1) || location.pathname.replace(/\/$/, "") || "/");
+  const [route, setRoute] = useState(
+    location.hash.slice(1) || location.pathname.replace(/\/$/, "") || "/",
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [offline, setOffline] = useState(!navigator.onLine);
@@ -175,7 +170,9 @@ export default function App() {
   }, [userId, refresh]);
   useEffect(() => {
     const change = () => {
-      setRoute(location.hash.slice(1) || location.pathname.replace(/\/$/, "") || "/");
+      setRoute(
+        location.hash.slice(1) || location.pathname.replace(/\/$/, "") || "/",
+      );
       setDetail(null);
       setSuccessId("");
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -210,8 +207,14 @@ export default function App() {
       window.scrollTo({ top: 0 });
       return;
     }
-    if (publicPages.some(p => p.path === path)) { location.assign(publicPath(path)); return; }
-    if (location.pathname !== "/") { location.assign("/#" + path); return; }
+    if (publicPages.some((p) => p.path === path)) {
+      location.assign(publicPath(path));
+      return;
+    }
+    if (location.pathname !== "/") {
+      location.assign("/#" + path);
+      return;
+    }
     location.hash = path;
   }
   async function signout() {
@@ -232,24 +235,63 @@ export default function App() {
   }
   const isDirector = profile && ["admin", "director"].includes(profile.role);
   const isAdminRoute = ["/admin", "/cadastros", "/publicacoes"].includes(route);
-  const canPublish =
-    profile && ["admin", "communications"].includes(profile.role);
+  const canPublish = profile && ["admin", "communications"].includes(profile.role);
   const isVolunteer = profile?.role === "volunteer";
   useEffect(() => {
-    if (!publicPages.some(p => p.path === route)) {
-      document.querySelector('meta[name="robots"]')?.setAttribute("content", "noindex,nofollow");
+    if (!publicPages.some((p) => p.path === route)) {
+      document
+        .querySelector('meta[name="robots"]')
+        ?.setAttribute("content", "noindex,nofollow");
       document.title = "Minha célula | Presente de Alegria";
     }
   }, [route]);
   let content;
   if (route === "/") content = <Landing />;
-  else if (route === "/sobre") content = <>
-    <div className="eyebrow">PRESENTE DE ALEGRIA</div><h1>Alegria que aproxima.</h1>
-    <p className="intro">Acompanhe nossos encontros, conheça as novidades da ONG e descubra como fazer parte dessa história.</p>
-    <div className="card"><h2>Seu próximo gesto de alegria</h2><p>Participe de uma ação voluntária ou conheça as campanhas de apoio ao Presente de Alegria.</p><div className="publication-links"><a className="primary" href="/eventos/">Participar de um evento</a><a className="secondary" href="/ajudas/">Quero ajudar</a></div></div>
-    <div className="card"><h2>Quer ser voluntário?</h2><p>Conheça o voluntariado e as orientações para participar no site oficial da ONG.</p><a className="secondary" href="https://presentedealegria.org.br/voluntario/" target="_blank" rel="noopener noreferrer">Conhecer o voluntariado ↗</a></div>
-    <p><a href="/noticias/">Acompanhar as notícias</a> · <a href="/instalar/">Instalar no celular</a></p>
-  </>;
+  else if (route === "/sobre")
+    content = (
+      <>
+        <div className="eyebrow">PRESENTE DE ALEGRIA</div>
+        <h1>Alegria que aproxima.</h1>
+        <p className="intro">
+          Acompanhe nossos encontros, conheça as novidades da ONG e descubra como
+          fazer parte dessa história.
+        </p>
+        <div className="card">
+          <h2>Seu próximo gesto de alegria</h2>
+          <p>
+            Participe de uma ação voluntária ou conheça as campanhas de apoio ao
+            Presente de Alegria.
+          </p>
+          <div className="publication-links">
+            <a className="primary" href="/eventos/">
+              Participar de um evento
+            </a>
+            <a className="secondary" href="/ajudas/">
+              Quero ajudar
+            </a>
+          </div>
+        </div>
+        <div className="card">
+          <h2>Quer ser voluntário?</h2>
+          <p>
+            Conheça o voluntariado e as orientações para participar no site oficial
+            da ONG.
+          </p>
+          <a
+            className="secondary"
+            href="https://presentedealegria.org.br/voluntario/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Conhecer o voluntariado ↗
+          </a>
+        </div>
+        <p>
+          <a href="/noticias/">Acompanhar as notícias</a> ·{" "}
+          <a href="/instalar/">Instalar no celular</a>
+        </p>
+      </>
+    );
   else if (route === "/instalar") content = <Install />;
   else if (route === "/privacidade")
     content = (
@@ -259,29 +301,28 @@ export default function App() {
           <h2>Para que usamos as informações?</h2>
           <p>
             O Presente de Alegria utiliza os dados para registrar as visitas,
-            arquivar os comprovantes assinados e acompanhar as atividades da
-            ONG.
+            arquivar os comprovantes assinados e acompanhar as atividades da ONG.
           </p>
           <p>
-            Nome, cargo, CPF e assinatura do relatório pertencem ao profissional
-            da instituição. O coordenador é identificado como responsável pelo
-            envio. O CPF é opcional.
+            Nome, cargo, CPF e assinatura do relatório pertencem ao profissional da
+            instituição. O coordenador é identificado como responsável pelo envio. O
+            CPF é opcional.
           </p>
           <p>
-            Coordenadores acessam os relatórios das células autorizadas; a
-            diretoria acompanha os relatórios da ONG. Notícias, eventos e
-            campanhas de ajuda publicados são públicos. Dados das células e
-            documentos continuam restritos.
+            Coordenadores acessam os relatórios das células autorizadas; a diretoria
+            acompanha os relatórios da ONG. Notícias, eventos e campanhas de ajuda
+            publicados são públicos. Dados das células e documentos continuam
+            restritos.
           </p>
           <p>
-            Rascunhos locais guardam apenas data, horários e quantidades por até
-            7 dias. Dados do profissional, assinatura e anexos não são salvos no
+            Rascunhos locais guardam apenas data, horários e quantidades por até 7
+            dias. Dados do profissional, assinatura e anexos não são salvos no
             rascunho. Ao sair da conta, os rascunhos são removidos.
           </p>
           <p>
-            Para corrigir informações, tratar de acesso ou solicitar
-            esclarecimentos sobre retenção e privacidade, procure a diretoria do
-            Presente de Alegria pelos canais habituais da ONG.
+            Para corrigir informações, tratar de acesso ou solicitar esclarecimentos
+            sobre retenção e privacidade, procure a diretoria do Presente de Alegria
+            pelos canais habituais da ONG.
           </p>
         </div>
       </>
@@ -349,9 +390,7 @@ export default function App() {
     isVolunteer &&
     (route === "/minha-celula" || route === "/eventos" || route === "/calendario")
   )
-    content = (
-      <EventsFeed events={data.events} calendar={route === "/calendario"} />
-    );
+    content = <EventsFeed events={data.events} calendar={route === "/calendario"} />;
   else if (isVolunteer && route !== "/noticias")
     content = (
       <div className="card">
@@ -374,8 +413,7 @@ export default function App() {
       <div className="card">
         <h2>Confira seu histórico</h2>
         <p>
-          O envio foi recebido. Atualize o histórico para visualizar o
-          relatório.
+          O envio foi recebido. Atualize o histórico para visualizar o relatório.
         </p>
         <button className="primary" onClick={() => void refresh()}>
           Atualizar
@@ -409,9 +447,7 @@ export default function App() {
       />
     );
   else if (route === "/eventos" || route === "/calendario")
-    content = (
-      <EventsFeed events={data.events} calendar={route === "/calendario"} />
-    );
+    content = <EventsFeed events={data.events} calendar={route === "/calendario"} />;
   else if (route === "/noticias") content = <NewsFeed news={data.news} />;
   else if (route === "/admin")
     content = (
@@ -487,8 +523,8 @@ export default function App() {
       </header>
       {offline && (
         <div className="offline" role="status">
-          Você está sem conexão. É preciso estar online para entrar, enviar ou
-          baixar relatórios.
+          Você está sem conexão. É preciso estar online para entrar, enviar ou baixar
+          relatórios.
         </div>
       )}
       <main
@@ -497,9 +533,7 @@ export default function App() {
         ref={main}
         className={isAdminRoute ? "wide" : ""}
       >
-        <Suspense fallback={<p role="status">Carregando…</p>}>
-          {content}
-        </Suspense>
+        <Suspense fallback={<p role="status">Carregando…</p>}>{content}</Suspense>
       </main>
       <footer>
         <span>
@@ -517,7 +551,10 @@ export default function App() {
           {(
             [
               {
-                path: profile?.role === "communications" ? "/publicacoes" : "/minha-celula",
+                path:
+                  profile?.role === "communications"
+                    ? "/publicacoes"
+                    : "/minha-celula",
                 title:
                   profile?.role === "communications"
                     ? "Publicações"
@@ -531,9 +568,24 @@ export default function App() {
           ).map((item) => (
             <a
               key={item.path}
-              href={publicPages.some(p => p.path === item.path) ? publicPath(item.path) : "/#" + item.path}
+              href={
+                publicPages.some((p) => p.path === item.path)
+                  ? publicPath(item.path)
+                  : "/#" + item.path
+              }
               aria-current={route === item.path ? "page" : undefined}
-              onClick={(e) => { if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) { e.preventDefault(); navigate(item.path); } }}
+              onClick={(e) => {
+                if (
+                  !e.ctrlKey &&
+                  !e.metaKey &&
+                  !e.shiftKey &&
+                  !e.altKey &&
+                  e.button === 0
+                ) {
+                  e.preventDefault();
+                  navigate(item.path);
+                }
+              }}
             >
               <Icon name={item.icon} />
               <span>{item.title}</span>

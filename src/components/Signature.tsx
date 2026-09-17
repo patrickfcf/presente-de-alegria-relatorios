@@ -73,10 +73,7 @@ export function Signature({
   }
   function confirm() {
     const p = pad.current!;
-    if (
-      p.isEmpty() ||
-      p.toData().reduce((sum, g) => sum + g.points.length, 0) < 4
-    ) {
+    if (p.isEmpty() || p.toData().reduce((sum, g) => sum + g.points.length, 0) < 4) {
       setError("Peça ao profissional para assinar no espaço acima.");
       return;
     }
@@ -84,15 +81,14 @@ export function Signature({
       if (blob) {
         onConfirm(blob, canvas.current!.toDataURL("image/png"));
         setConfirmed(true);
-      } else
-        setError("Não foi possível capturar a assinatura. Tente novamente.");
+      } else setError("Não foi possível capturar a assinatura. Tente novamente.");
     }, "image/png");
   }
   return (
     <div className="signature">
       <p id="signature-help">
-        Entregue o celular ao profissional da instituição para ele assinar com o
-        dedo ou uma caneta.
+        Entregue o celular ao profissional da instituição para ele assinar com o dedo
+        ou uma caneta.
       </p>
       <canvas
         ref={canvas}
@@ -116,8 +112,7 @@ export function Signature({
         </p>
       )}
       <p className="small muted">
-        Não consegue assinar na tela? Use a opção de documento assinado em
-        papel.
+        Não consegue assinar na tela? Use a opção de documento assinado em papel.
       </p>
     </div>
   );
