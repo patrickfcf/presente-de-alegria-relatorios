@@ -29,6 +29,7 @@ import { Home } from "./components/Home";
 import { EventsFeed, NewsFeed } from "./components/Feed";
 import { PublicFeed } from "./components/PublicFeed";
 import "./App.css";
+import { publicPages } from "../shared/seo";
 const ReportForm = lazy(() =>
   import("./components/ReportForm").then((m) => ({ default: m.ReportForm })),
 );
@@ -70,7 +71,7 @@ export default function App() {
   const [authReady, setAuthReady] = useState(!configured);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [data, setData] = useState(EMPTY);
-  const [route, setRoute] = useState(location.hash.slice(1) || "/");
+  const [route, setRoute] = useState(location.hash.slice(1) || location.pathname.replace(/\/$/, "") || "/");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [offline, setOffline] = useState(!navigator.onLine);
@@ -173,7 +174,7 @@ export default function App() {
   }, [userId, refresh]);
   useEffect(() => {
     const change = () => {
-      setRoute(location.hash.slice(1) || "/");
+      setRoute(location.hash.slice(1) || location.pathname.replace(/\/$/, "") || "/");
       setDetail(null);
       setSuccessId("");
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -208,6 +209,8 @@ export default function App() {
       window.scrollTo({ top: 0 });
       return;
     }
+    if (publicPages.some(p => p.path === path)) { location.assign(path); return; }
+    if (location.pathname !== "/") { location.assign("/#" + path); return; }
     location.hash = path;
   }
   async function signout() {
@@ -231,8 +234,21 @@ export default function App() {
   const canPublish =
     profile && ["admin", "communications"].includes(profile.role);
   const isVolunteer = profile?.role === "volunteer";
+  useEffect(() => {
+    if (!publicPages.some(p => p.path === route)) {
+      document.querySelector('meta[name="robots"]')?.setAttribute("content", "noindex,nofollow");
+      document.title = "Minha célula | Presente de Alegria";
+    }
+  }, [route]);
   let content;
-  if (route === "/instalar") content = <Install />;
+  if (route === "/sobre") content = <>
+    <div className="eyebrow">PRESENTE DE ALEGRIA</div><h1>Alegria que aproxima.</h1>
+    <p className="intro">Acompanhe nossos encontros, conheça as novidades da ONG e descubra como fazer parte dessa história.</p>
+    <div className="card"><h2>Seu próximo gesto de alegria</h2><p>Participe de uma ação voluntária ou conheça as campanhas de apoio ao Presente de Alegria.</p><div className="publication-links"><a className="primary" href="/eventos">Participar de um evento</a><a className="secondary" href="/ajudas">Quero ajudar</a></div></div>
+    <div className="card"><h2>Quer ser voluntário?</h2><p>Conheça o voluntariado e as orientações para participar no site oficial da ONG.</p><a className="secondary" href="https://presentedealegria.org.br/voluntario/" target="_blank" rel="noopener noreferrer">Conhecer o voluntariado ↗</a></div>
+    <p><a href="/noticias">Acompanhar as notícias</a> · <a href="/instalar">Instalar no celular</a></p>
+  </>;
+  else if (route === "/instalar") content = <Install />;
   else if (route === "/privacidade")
     content = (
       <>
@@ -493,9 +509,10 @@ export default function App() {
           Feito para quem espalha alegria <span className="heart">♥</span>
         </span>
         <div>
-          <a href="#/instalar">Instalar aplicativo</a>
-          <a href="#/privacidade">Privacidade</a>
-          <a href="#/admin">Área da diretoria</a>
+          <a href="/sobre">Sobre o Presente</a>
+          <a href="/instalar">Instalar aplicativo</a>
+          <a href="/#/privacidade">Privacidade</a>
+          <a href="/#/admin">Área da diretoria</a>
         </div>
       </footer>
       {route !== "/relatorios/novo" && (
@@ -515,14 +532,15 @@ export default function App() {
               { path: "/ajudas", title: "Ajudas", icon: "heart" },
             ] as const
           ).map((item) => (
-            <button
+            <a
               key={item.path}
+              href={publicPages.some(p => p.path === item.path) ? item.path : "/#" + item.path}
               aria-current={route === item.path ? "page" : undefined}
-              onClick={() => navigate(item.path)}
+              onClick={(e) => { if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) { e.preventDefault(); navigate(item.path); } }}
             >
               <Icon name={item.icon} />
               <span>{item.title}</span>
-            </button>
+            </a>
           ))}
         </nav>
       )}

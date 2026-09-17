@@ -86,3 +86,7 @@ Deploy das funções inclui arquivos `shared/`, `_shared/http.ts` e import map `
 - [Integração Git](https://developers.cloudflare.com/pages/get-started/git-integration/)
 
 Renomear o repositório não muda o identificador do projeto Supabase. Clones existentes podem atualizar o remoto com `git remote set-url origin https://github.com/patrickfcf/presentedealegria-app.git`.
+
+## Corrigir e-mail com link para localhost
+
+Um e-mail entregue não confirma que o fluxo OTP foi configurado. No projeto, abrir **Authentication → URL Configuration** e salvar `https://presentedealegria.app` como **Site URL**. Em **Authentication → Emails → Magic Link**, definir assunto `Seu código de acesso · Presente de Alegria` e substituir o corpo pelo arquivo `supabase/templates/magic-link.html`. Ele usa `{{ .Token }}`, não `{{ .ConfirmationURL }}`. Salvar e solicitar um código novo no app; links antigos não são corrigidos retroativamente. A configuração de templates no repositório não é aplicada automaticamente ao projeto hospedado. O conector disponível não oferece edição de Auth e o navegador foi bloqueado por CAPTCHA; a configuração precisa ser concluída no painel. Nunca enviar prints de URLs com tokens.

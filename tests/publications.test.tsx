@@ -4,7 +4,7 @@ import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { validateDetails } from "../shared/publications";
 import { PublicFeed } from "../src/components/PublicFeed";
-import { CampaignsFeed } from "../src/components/Feed";
+import { CampaignsFeed, EventsFeed, NewsFeed } from "../src/components/Feed";
 const api = vi.hoisted(() => ({ publicRows: vi.fn() }));
 vi.mock("../src/lib/api", () => api);
 afterEach(() => {
@@ -86,4 +86,36 @@ it("hides draft and scheduled campaigns and removes participation from ended cam
   expect(
     screen.getAllByRole("button", { name: "Copiar chave Pix" }),
   ).toHaveLength(1);
+});
+
+it("sorts events by publication and filters category, month and accent-insensitive location", () => {
+  const base = { description: "Visita", location: "São Paulo", starts_at: "2099-10-01T12:00:00Z", ends_at: null, status: "published" as const, details: { category: "Ação pontual" } };
+  render(<EventsFeed events={[
+    {...base, id: "a", title: "Antigo", published_at: "2020-01-01T00:00:00Z"},
+    {...base, id: "b", title: "Novo", published_at: "2021-01-01T00:00:00Z", starts_at: "2099-11-01T12:00:00Z"},
+    {...base, id: "c", title: "Rascunho", status: "draft"},
+  ]} />);
+  expect(screen.getAllByRole("article")[0]).toHaveTextContent("Novo");
+  fireEvent.change(screen.getByLabelText("Ordenar por"), {target: {value: "upcoming"}});
+  expect(screen.getAllByRole("article")[0]).toHaveTextContent("Antigo");
+  fireEvent.change(screen.getByLabelText("Buscar"), {target: {value: "sao paulo"}});
+  expect(screen.getAllByRole("article")).toHaveLength(2);
+  fireEvent.change(screen.getByLabelText("Mês do evento"), {target: {value: "2099-11"}});
+  expect(screen.getAllByRole("article")).toHaveLength(1);
+  fireEvent.change(screen.getByLabelText("Categoria"), {target: {value: "Formação"}});
+  expect(screen.getByText("Nenhum evento encontrado.")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", {name: "Limpar filtros"}));
+  expect(screen.getAllByRole("article")).toHaveLength(2);
+});
+it("filters news by publication month and keeps scheduled news private", () => {
+  const base = {body: "Texto", status: "published" as const, details: {category: "Resultados"}};
+  render(<NewsFeed news={[
+    {...base, id: "a", title: "Antiga", published_at: "2020-01-01T12:00:00Z"},
+    {...base, id: "b", title: "Nova", published_at: "2020-02-01T12:00:00Z"},
+    {...base, id: "c", title: "Agendada", published_at: "2099-02-01T12:00:00Z"},
+  ]} />);
+  expect(screen.getAllByRole("article")[0]).toHaveTextContent("Nova");
+  fireEvent.change(screen.getByLabelText("Mês da publicação"), {target: {value: "2020-01"}});
+  expect(screen.getAllByRole("article")).toHaveLength(1);
+  expect(screen.queryByText("Agendada")).not.toBeInTheDocument();
 });

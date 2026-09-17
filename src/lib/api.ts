@@ -99,7 +99,7 @@ export async function publicRows<T>(
   if (!publicClient) throw new Error("Aplicativo não configurado.");
   const columns =
     table === "events"
-      ? "id,title,description,location,starts_at,ends_at,status,details"
+      ? "id,title,description,location,starts_at,ends_at,status,details,published_at"
       : "id,title,body,published_at,status,details" +
         (table === "campaigns" ? ",ends_at" : "");
   const result: T[] = [];
@@ -107,9 +107,7 @@ export async function publicRows<T>(
     const { data, error } = await publicClient
       .from(table)
       .select(columns)
-      .order(table === "events" ? "starts_at" : "published_at", {
-        ascending: table === "events",
-      })
+      .order("published_at", { ascending: false })
       .order("id")
       .range(offset, offset + 99);
     if (error)

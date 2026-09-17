@@ -391,7 +391,9 @@ h3 {
   z-index: 20;
   backdrop-filter: blur(12px);
 }
-.bottom-nav button {
+.bottom-nav a {
+  text-decoration: none;
+  min-height: 48px;
   width: 150px;
   display: flex;
   flex-direction: column;
@@ -405,7 +407,7 @@ h3 {
   font-weight: 600;
   border-radius: 12px;
 }
-.bottom-nav button[aria-current="page"] {
+.bottom-nav a[aria-current="page"] {
   color: #6437d1;
   background: #f5effc;
 }
@@ -1084,7 +1086,9 @@ dialog::backdrop {
   border-radius: 16px;
   margin-top: 20px;
 }
-.bottom-nav button {
+.bottom-nav a {
+  text-decoration: none;
+  min-height: 48px;
   min-width: 0;
   flex: 1;
   max-width: 150px;
@@ -1096,3 +1100,7 @@ dialog::backdrop {
   border-radius: 16px;
   margin-block: 18px;
 }
+
+.feed-filters { margin: 24px 0 8px; }
+.feed-filters .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 420px) { .feed-filters .filters { grid-template-columns: minmax(0, 1fr); } }

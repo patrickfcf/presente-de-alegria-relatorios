@@ -3,28 +3,57 @@ import type { Campaign, Event, News } from "../../shared/report";
 import { todayBR } from "../../shared/report";
 import {
   safePublicUrl,
+  categories,
   type PublicationDetails,
 } from "../../shared/publications";
+import { SharePage } from "./SharePage";
 import { Icon } from "./Icon";
 const fmt = (date: string, options: Intl.DateTimeFormatOptions) =>
   new Date(date).toLocaleString("pt-BR", {
     timeZone: "America/Sao_Paulo",
     ...options,
   });
+const monthBR = (date: string) => new Intl.DateTimeFormat("sv-SE", { timeZone: "America/Sao_Paulo" }).format(new Date(date)).slice(0, 7);
+const searchable = (value: string) => value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLocaleLowerCase("pt-BR");
+function FeedFilters({ kind, search, setSearch, category, setCategory, month, setMonth, order, setOrder }: {
+  kind: "news" | "events"; search: string; setSearch: (v: string) => void;
+  category: string; setCategory: (v: string) => void; month: string; setMonth: (v: string) => void;
+  order: string; setOrder: (v: string) => void;
+}) {
+  return <section aria-label="Filtros de publicações" className="feed-filters">
+    <div className="filters">
+      <label>Buscar<input type="search" value={search} placeholder={kind === "events" ? "Título ou local" : "Título ou texto"} onChange={e => setSearch(e.target.value)} /></label>
+      <label>Categoria<select value={category} onChange={e => setCategory(e.target.value)}><option value="">Todas</option>{categories[kind].map(c => <option key={c}>{c}</option>)}</select></label>
+      <label>{kind === "events" ? "Mês do evento" : "Mês da publicação"}<input type="month" value={month} onChange={e => setMonth(e.target.value)} /></label>
+      <label>Ordenar por<select value={order} onChange={e => setOrder(e.target.value)}><option value="recent">Publicações mais recentes</option><option value="oldest">Publicações mais antigas</option>{kind === "events" && <><option value="upcoming">Data do evento: próximos primeiro</option><option value="latest">Data do evento: mais recentes primeiro</option></>}</select></label>
+    </div>
+    <button className="text-button" onClick={() => {setSearch(""); setCategory(""); setMonth(""); setOrder("recent");}}>Limpar filtros</button>
+  </section>;
+}
 export function NewsFeed({ news }: { news: News[] }) {
   const [open, setOpen] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [month, setMonth] = useState("");
+  const [order, setOrder] = useState("recent");
   const items = news
     .filter(
-      (n) => n.status === "published" && new Date(n.published_at) <= new Date(),
+      (n) => n.status === "published" && new Date(n.published_at) <= new Date()
+      && (!category || (n.details?.category || "Comunicado") === category)
+      && (!month || monthBR(n.published_at) === month)
+      && searchable(n.title + " " + n.body + " " + (n.details?.summary || "")).includes(searchable(search.trim())),
     )
-    .sort((a, b) => b.published_at.localeCompare(a.published_at));
+    .sort((a, b) => (order === "oldest" ? 1 : -1) * (Date.parse(a.published_at) - Date.parse(b.published_at)) || a.id.localeCompare(b.id));
   return (
     <>
       <div className="eyebrow">NOSSA ALEGRIA EM MOVIMENTO</div>
       <h1>Notícias</h1>
+      <SharePage path="/noticias" title="Notícias do Presente de Alegria" />
       <p className="intro">
         Novidades e recados para quem faz parte dessa história.
       </p>
+      <FeedFilters kind="news" {...{search, setSearch, category, setCategory, month, setMonth, order, setOrder}} />
+      <p role="status" className="small muted">{items.length} notícia(s)</p>
       {items.length ? (
         items.map((n) => (
           <article key={n.id} className="card news-card">
@@ -58,10 +87,9 @@ export function NewsFeed({ news }: { news: News[] }) {
       ) : (
         <div className="empty card">
           <Icon name="news" size={38} />
-          <h2>As novidades chegam por aqui.</h2>
+          <h2>{search || category || month ? "Nenhuma notícia encontrada." : "As novidades chegam por aqui."}</h2>
           <p>
-            Quando a equipe de comunicação publicar um comunicado, você poderá
-            acompanhar nesta página.
+            {search || category || month ? "Tente outros filtros ou limpe a busca." : "Quando a equipe de comunicação publicar um comunicado, você poderá acompanhar nesta página."}
           </p>
         </div>
       )}
@@ -76,39 +104,38 @@ export function EventsFeed({
   calendar?: boolean;
 }) {
   const [past, setPast] = useState(false);
-  const [month, setMonth] = useState(todayBR().slice(0, 7));
-  const items = events
-    .filter(
-      (e) =>
-        e.status === "published" &&
-        (calendar
-          ? new Intl.DateTimeFormat("sv-SE", { timeZone: "America/Sao_Paulo" })
-              .format(new Date(e.starts_at))
-              .startsWith(month)
-          : past || new Date(e.ends_at || e.starts_at) >= new Date()),
-    )
-    .sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+  const [month, setMonth] = useState(calendar ? todayBR().slice(0, 7) : "");
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [order, setOrder] = useState(calendar ? "upcoming" : "recent");
+  const items = events.filter(e => e.status === "published"
+    && (calendar || past || new Date(e.ends_at || e.starts_at) >= new Date())
+    && (!month || monthBR(e.starts_at) === month)
+    && (!category || (e.details?.category || "Encontro") === category)
+    && searchable(e.title + " " + e.location + " " + e.description).includes(searchable(search.trim())))
+    .sort((a, b) => {
+      const difference = order === "upcoming" || order === "latest"
+        ? Date.parse(a.starts_at) - Date.parse(b.starts_at)
+        : Date.parse(a.published_at || a.starts_at) - Date.parse(b.published_at || b.starts_at);
+      return (order === "oldest" || order === "upcoming" ? 1 : -1) * difference
+        || Date.parse(a.starts_at) - Date.parse(b.starts_at) || a.id.localeCompare(b.id);
+    });
   return (
     <>
       <div className="eyebrow">ENCONTROS QUE APROXIMAM</div>
       <h1>{calendar ? "Calendário" : "Eventos"}</h1>
+      <SharePage path="/eventos" title="Eventos do Presente de Alegria" />
       <p className="intro">Veja o que vem por aí e faça parte.</p>
       <p>
         <a
           className="text-button"
-          href={calendar ? "#/eventos" : "#/calendario"}
+          href={calendar ? "/eventos" : "/#/calendario"}
         >
           {calendar ? "Ver próximos eventos" : "Ver calendário mensal"}
         </a>
       </p>
-      <label hidden={!calendar}>
-        Mês dos encontros
-        <input
-          type="month"
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-        />
-      </label>
+      <FeedFilters kind="events" {...{search, setSearch, category, setCategory, month, setMonth, order, setOrder}} />
+      <p role="status" className="small muted">{items.length} evento(s)</p>
       <label hidden={calendar} className="check-label">
         <input
           type="checkbox"
@@ -161,10 +188,9 @@ export function EventsFeed({
       ) : (
         <div className="empty card">
           <Icon name="calendar" size={38} />
-          <h2>Novos encontros em breve.</h2>
+          <h2>{search || category || month ? "Nenhum evento encontrado." : "Novos encontros em breve."}</h2>
           <p>
-            A equipe de comunicação publicará aqui as datas, os horários e os
-            locais dos próximos eventos.
+            {search || category || month ? "Tente outros filtros ou limpe a busca." : "A equipe de comunicação publicará aqui as datas, os horários e os locais dos próximos eventos."}
           </p>
         </div>
       )}
@@ -261,6 +287,7 @@ export function CampaignsFeed({ campaigns }: { campaigns: Campaign[] }) {
     <>
       <div className="eyebrow">CADA GESTO FAZ DIFERENÇA</div>
       <h1>Ajudas</h1>
+      <SharePage path="/ajudas" title="Ajude o Presente de Alegria" />
       <p className="intro">
         Conheça as campanhas e escolha como apoiar o Presente de Alegria.
       </p>

@@ -38,3 +38,7 @@ Nenhum CPF real, assinatura real ou relatório de produção foi incluído no re
 ## Evolução das publicações
 
 Eventos, Notícias e Ajudas públicos; editor com categorias, resumo, contato, ação, prévia e confirmação pública. Campanhas com prazo, histórico e Pix com favorecido. Permissões SQL conferidas em transação revertida; suite de aplicação ampliada. Teste autenticado de publicação ainda depende do primeiro administrador/SMTP.
+
+## Filtros e descoberta pública
+
+Ordenação por primeira publicação nos eventos, busca/categoria/mês, opções cronológicas e estados sem resultados. Páginas públicas com URLs próprias, metadados sociais, sitemap, robots e página Sobre com participação/apoio. Configuração de Auth ainda pendente no painel: o print mostrou template padrão Magic Link e redirect localhost; template OTP e Site URL corretos estão documentados. Administrador inicial e três eventos/uma campanha já foram cadastrados; não versionar seus dados pessoais.

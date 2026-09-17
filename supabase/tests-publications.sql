@@ -10,6 +10,18 @@ insert into public.events(title,description,location,starts_at,status,created_by
 select 'Teste '||state,'Texto','Sede',now()+interval '1 day',state,id,id from pub_fixture cross join (values ('published'),('draft'),('archived')) s(state);
 insert into public.campaigns(title,body,status,published_at,created_by,updated_by)
 select 'Teste '||state,'Texto',state,now()+delta,id,id from pub_fixture cross join (values ('published',interval '-1 day'),('published',interval '1 day'),('draft',interval '-1 day'),('archived',interval '-1 day')) as s(state,delta);
+-- First publication is assigned on publish and remains stable through edits/republication.
+do $$ declare event_id uuid; first_time timestamptz; begin
+ select id into event_id from public.events where title='Teste draft';
+ if (select published_at from public.events where id=event_id) is not null then raise exception 'Draft has publication time'; end if;
+ update public.events set status='published' where id=event_id;
+ select published_at into first_time from public.events where id=event_id;
+ if first_time is null then raise exception 'Missing publication time'; end if;
+ update public.events set status='draft',published_at=now()+interval '1 year' where id=event_id;
+ update public.events set status='published' where id=event_id;
+ if (select published_at from public.events where id=event_id) is distinct from first_time then raise exception 'Publication date changed'; end if;
+ update public.events set status='draft' where id=event_id;
+end $$;
 set local role anon;
 do $$ begin
  if (select count(id) from public.news where title like 'Teste %')<>1 then raise exception 'Anonymous news exposure';end if;

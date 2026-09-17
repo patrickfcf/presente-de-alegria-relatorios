@@ -233,6 +233,7 @@ export type News = {
   status: "draft" | "published" | "archived";
 };
 export type Event = {
+  published_at?: string | null;
   details?: PublicationDetails;
   id: string;
   title: string;

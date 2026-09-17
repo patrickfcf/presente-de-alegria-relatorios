@@ -30,3 +30,5 @@ Supabase Security Advisor: sem alertas WARNING/ERROR. Há INFO em `private.audit
 - Exclusão de acesso preserva dados históricos. Pedidos de descarte devem seguir procedimento próprio e finalidade documental definida pela ONG.
 
 Publicações abertas: `supabase/tests-publications.sql` verifica visitantes, rascunhos/agendamento, escrita direta negada, ocultação de autores e proteção de perfis/relatórios/arquivos, além de editor desativado. Fixtures sintéticas em transação revertida. Conteúdo publicado pode ser copiado por visitantes; arquivar não elimina cópias externas.
+
+Revisão posterior: o Advisor reportou proteção contra senhas vazadas desativada em Auth. Não alterada automaticamente; o fluxo do aplicativo é OTP, mas a conta inicial foi criada com senha no painel. Avaliar as configurações e disponibilidade do plano antes de habilitar. Referência: https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection. O trigger de data editorial é SECURITY INVOKER, não expõe RPC e os testes públicos continuam exigindo somente leitura anônima.

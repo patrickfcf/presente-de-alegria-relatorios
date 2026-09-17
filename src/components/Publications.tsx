@@ -93,9 +93,9 @@ export function Publications({
                           : "Publicado"}{" "}
                       ·{" "}
                       {localDate(
-                        "published_at" in item
-                          ? item.published_at
-                          : item.starts_at,
+                        "starts_at" in item
+                          ? item.starts_at
+                          : item.published_at,
                       ).replace("T", " ")}
                     </small>
                   </div>
@@ -134,9 +134,9 @@ function Editor({
   const [date, setDate] = useState(
     localDate(
       item
-        ? "published_at" in item
-          ? item.published_at
-          : item.starts_at
+        ? "starts_at" in item
+          ? item.starts_at
+          : item.published_at
         : new Date().toISOString(),
     ),
   );

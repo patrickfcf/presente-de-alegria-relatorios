@@ -20,6 +20,8 @@ Diretor → coordenadores → voluntários é representado por `profiles.manager
 
 ## Rotas
 
+Páginas públicas também têm URLs sem hash e HTML de metadados: `/sobre`, `/eventos`, `/noticias`, `/ajudas`, `/instalar`. Links públicos antigos redirecionam para essas URLs. Entrada/relatórios/admin continuam por hash. Veja `docs/seo.md`.
+
 Rotas por hash evitam configuração extra de SPA e simplificam URLs no PWA:
 `#/` entrada/home; `#/relatorios/novo`; `#/enviado/:id`; `#/eventos`; `#/calendario`; `#/noticias`; `#/admin`; `#/cadastros`; `#/publicacoes`; `#/instalar`; `#/privacidade`.
 

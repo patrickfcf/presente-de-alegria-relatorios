@@ -107,3 +107,7 @@ O código e a documentação originais são distribuídos sob a [licença MIT](L
 ## Publicações abertas
 
 Eventos, Notícias, Ajudas e Calendário não exigem conta. Minha célula e a gestão de publicações exigem login. Rascunhos, arquivados e notícias/campanhas agendadas não são expostos. Contatos publicados são públicos: a equipe confirma a divulgação antes de salvar. Ajudas divulga campanhas e canais oficiais, sem processar pagamentos, vender números ou realizar sorteios.
+
+### Descoberta e divulgação
+
+Páginas públicas: [Sobre](https://presentedealegria.app/sobre), [Eventos](https://presentedealegria.app/eventos), [Notícias](https://presentedealegria.app/noticias) e [Ajudas](https://presentedealegria.app/ajudas). Metadados sociais, sitemap e limites de indexação estão em [SEO e divulgação](docs/seo.md).
