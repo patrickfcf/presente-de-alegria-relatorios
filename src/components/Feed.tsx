@@ -1,6 +1,10 @@
 import { useState } from "react";
-import type { Event, News } from "../../shared/report";
+import type { Campaign, Event, News } from "../../shared/report";
 import { todayBR } from "../../shared/report";
+import {
+  safePublicUrl,
+  type PublicationDetails,
+} from "../../shared/publications";
 import { Icon } from "./Icon";
 const fmt = (date: string, options: Intl.DateTimeFormatOptions) =>
   new Date(date).toLocaleString("pt-BR", {
@@ -32,7 +36,11 @@ export function NewsFeed({ news }: { news: News[] }) {
                 year: "numeric",
               })}
             </div>
+            <span className="publication-tag">
+              {n.details?.category || "Comunicado"}
+            </span>
             <h2>{n.title}</h2>
+            {n.details?.summary && <p className="intro">{n.details.summary}</p>}
             <p className={"preserve-lines " + (open === n.id ? "" : "clamp")}>
               {n.body}
             </p>
@@ -44,6 +52,7 @@ export function NewsFeed({ news }: { news: News[] }) {
               {open === n.id ? "Recolher" : "Ler comunicado"}
               <Icon name="arrow" size={18} />
             </button>
+            <PublicationLinks details={n.details} />
           </article>
         ))
       ) : (
@@ -84,6 +93,14 @@ export function EventsFeed({
       <div className="eyebrow">ENCONTROS QUE APROXIMAM</div>
       <h1>{calendar ? "Calendário" : "Eventos"}</h1>
       <p className="intro">Veja o que vem por aí e faça parte.</p>
+      <p>
+        <a
+          className="text-button"
+          href={calendar ? "#/eventos" : "#/calendario"}
+        >
+          {calendar ? "Ver próximos eventos" : "Ver calendário mensal"}
+        </a>
+      </p>
       <label hidden={!calendar}>
         Mês dos encontros
         <input
@@ -103,6 +120,9 @@ export function EventsFeed({
       {items.length ? (
         items.map((e) => (
           <article className="card event-card" key={e.id}>
+            <span className="publication-tag">
+              {e.details?.category || "Encontro"}
+            </span>
             <div className="event-top">
               <div className="date-tile">
                 <strong>{fmt(e.starts_at, { day: "2-digit" })}</strong>
@@ -133,7 +153,9 @@ export function EventsFeed({
               <Icon name="pin" size={18} />
               {e.location}
             </p>
+            {e.details?.summary && <p className="intro">{e.details.summary}</p>}
             <p className="preserve-lines">{e.description}</p>
+            <PublicationLinks details={e.details} />
           </article>
         ))
       ) : (
@@ -144,6 +166,167 @@ export function EventsFeed({
             A equipe de comunicação publicará aqui as datas, os horários e os
             locais dos próximos eventos.
           </p>
+        </div>
+      )}
+    </>
+  );
+}
+
+export function PublicationLinks({
+  details,
+  disabled = false,
+}: {
+  details?: PublicationDetails;
+  disabled?: boolean;
+}) {
+  if (!details || disabled) return null;
+  return (
+    <div className="publication-links">
+      {details.contact_name &&
+        details.contact_url &&
+        safePublicUrl(details.contact_url) && (
+          <a
+            className="secondary"
+            href={details.contact_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Falar com {details.contact_name} ↗
+          </a>
+        )}
+      {details.action_url && safePublicUrl(details.action_url) && (
+        <a
+          className="primary"
+          href={details.action_url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {details.action_label || "Saiba mais"} ↗
+        </a>
+      )}
+    </div>
+  );
+}
+function Pix({ details }: { details: PublicationDetails }) {
+  const [notice, setNotice] = useState("");
+  return (
+    <div className="pix-box">
+      <h3>Ajude via Pix</h3>
+      <p>
+        Favorecido: <strong>{details.pix_beneficiary}</strong>
+      </p>
+      <label>
+        Chave Pix
+        <input
+          readOnly
+          value={details.pix_key}
+          onFocus={(e) => e.target.select()}
+        />
+      </label>
+      <button
+        className="secondary"
+        onClick={async () => {
+          try {
+            await navigator.clipboard.writeText(details.pix_key!);
+            setNotice("Chave copiada.");
+          } catch {
+            setNotice("Selecione e copie a chave acima.");
+          }
+        }}
+      >
+        Copiar chave Pix
+      </button>
+      <p className="small">
+        Confira o nome do favorecido no seu banco antes de confirmar. O
+        aplicativo não processa nem confirma pagamentos.
+      </p>
+      <p role="status">{notice}</p>
+    </div>
+  );
+}
+export function CampaignsFeed({ campaigns }: { campaigns: Campaign[] }) {
+  const [now] = useState(() => Date.now());
+  const [category, setCategory] = useState("Todas");
+  const [ended, setEnded] = useState(false);
+  const items = campaigns
+    .filter(
+      (c) =>
+        c.status === "published" &&
+        Date.parse(c.published_at) <= now &&
+        (ended || !c.ends_at || Date.parse(c.ends_at) > now) &&
+        (category === "Todas" || c.details?.category === category),
+    )
+    .sort((a, b) => b.published_at.localeCompare(a.published_at));
+  return (
+    <>
+      <div className="eyebrow">CADA GESTO FAZ DIFERENÇA</div>
+      <h1>Ajudas</h1>
+      <p className="intro">
+        Conheça as campanhas e escolha como apoiar o Presente de Alegria.
+      </p>
+      <label>
+        Tipo de ajuda
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          {["Todas", "Doação", "Pix", "Arrecadação", "Rifa", "Bingo"].map(
+            (c) => (
+              <option key={c}>{c}</option>
+            ),
+          )}
+        </select>
+      </label>
+      <label className="check-label">
+        <input
+          type="checkbox"
+          checked={ended}
+          onChange={(e) => setEnded(e.target.checked)}
+        />
+        Mostrar também campanhas encerradas
+      </label>
+      {items.length ? (
+        items.map((c) => {
+          const closed = !!c.ends_at && Date.parse(c.ends_at) <= now;
+          return (
+            <article className="card news-card" key={c.id}>
+              <span className="publication-tag">
+                {c.details?.category || "Doação"}
+                {closed ? " · Encerrada" : ""}
+              </span>
+              <h2>{c.title}</h2>
+              {c.details?.summary && (
+                <p className="intro">{c.details.summary}</p>
+              )}
+              <p className="small muted">
+                Publicado em{" "}
+                {fmt(c.published_at, {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
+              {c.ends_at && (
+                <p>
+                  Até{" "}
+                  {fmt(c.ends_at, {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}{" "}
+                  · Brasília
+                </p>
+              )}
+              <p className="preserve-lines">{c.body}</p>
+              <PublicationLinks details={c.details} disabled={closed} />
+              {!closed && c.details?.pix_key && <Pix details={c.details} />}
+            </article>
+          );
+        })
+      ) : (
+        <div className="empty card">
+          <Icon name="heart" size={38} />
+          <h2>Novas formas de ajudar em breve.</h2>
+          <p>As campanhas publicadas pela Comunicação aparecerão aqui.</p>
         </div>
       )}
     </>

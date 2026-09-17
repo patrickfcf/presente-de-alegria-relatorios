@@ -7,6 +7,7 @@ import {
   handleError,
 } from "../_shared/http.ts";
 import { UUID } from "../../../shared/report.ts";
+import { validateDetails } from "../../../shared/publications.ts";
 const str = (v: unknown, min: number, max: number) =>
   typeof v === "string" && v.trim().length >= min && v.trim().length <= max;
 Deno.serve(async (req: Request) => {
@@ -44,14 +45,27 @@ Deno.serve(async (req: Request) => {
       )
     )
       throw new HttpError(403, "Acesso restrito à equipe responsável.");
-    if (action === "save-news" || action === "save-event") {
+    if (
+      action === "save-news" ||
+      action === "save-event" ||
+      action === "save-campaign"
+    ) {
       if (!["admin", "communications"].includes(profile.role))
         throw new HttpError(
           403,
           "Somente a equipe de comunicação pode publicar.",
         );
-      const isNews = action === "save-news";
-      const table = isNews ? "news" : "events";
+      const isNews = action !== "save-event";
+      const table =
+        action === "save-campaign" ? "campaigns" : isNews ? "news" : "events";
+      if (body.status === "published" && body.public_confirmed !== true)
+        throw new HttpError(400, "Confirme que o conteúdo pode ficar público.");
+      let details;
+      try {
+        details = validateDetails(table, body.details);
+      } catch (e) {
+        throw new HttpError(400, (e as Error).message);
+      }
       if (
         !str(body.title, 3, 160) ||
         !str(isNews ? body.body : body.description, 1, 4000) ||
@@ -62,6 +76,7 @@ Deno.serve(async (req: Request) => {
           "Confira o título, o texto e a situação da publicação.",
         );
       const data: Record<string, unknown> = {
+        details,
         title: String(body.title).trim(),
         status: body.status,
         updated_by: user.id,
@@ -99,6 +114,28 @@ Deno.serve(async (req: Request) => {
             ? new Date(String(body.ends_at)).toISOString()
             : null,
         });
+      }
+      if (table === "campaigns") {
+        if (
+          body.ends_at &&
+          (!Number.isFinite(Date.parse(String(body.ends_at))) ||
+            Date.parse(String(body.ends_at)) <=
+              Date.parse(String(body.published_at)))
+        )
+          throw new HttpError(400, "O prazo deve ser posterior à publicação.");
+        data.ends_at = body.ends_at
+          ? new Date(String(body.ends_at)).toISOString()
+          : null;
+        if (
+          body.status === "published" &&
+          !details.action_url &&
+          !details.contact_url &&
+          !details.pix_key
+        )
+          throw new HttpError(
+            400,
+            "Informe como ajudar: link, contato ou Pix.",
+          );
       }
       let result;
       if (body.id) {

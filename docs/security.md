@@ -4,7 +4,7 @@ Revisão técnica em 17/09/2026. Não representa certificação legal ou garanti
 
 ## Implementado e verificado
 
-- RLS em todas as tabelas expostas; clientes têm somente SELECT. Toda escrita de negócio passa pelas funções autenticadas.
+- RLS em todas as tabelas expostas; clientes têm somente SELECT. Visitantes anônimos leem apenas colunas editoriais de publicações liberadas; identificadores de autores/editores não estão incluídos. Toda escrita de negócio passa pelas funções autenticadas.
 - Papéis e situação vêm de `profiles`, nunca de `user_metadata`, seleção de tela ou payload do cliente.
 - Coordenadores leem documentos apenas de suas células. Voluntários e Comunicação não leem relatórios, presença, CPF ou assinaturas.
 - Desativação consultada a cada operação e leitura de dados; não depende de renovar o JWT.
@@ -28,3 +28,5 @@ Supabase Security Advisor: sem alertas WARNING/ERROR. Há INFO em `private.audit
 - Conteúdo de anexos não passa por antivírus/OCR; usuários autorizados devem conferir origem e legibilidade. Nenhum anexo é renderizado como HTML no aplicativo.
 - Operações usam perfil ativo além de Auth. Revogação de sessão no provedor não necessariamente invalida imediatamente JWT já emitido; para bloqueio imediato de dados, desativar o perfil.
 - Exclusão de acesso preserva dados históricos. Pedidos de descarte devem seguir procedimento próprio e finalidade documental definida pela ONG.
+
+Publicações abertas: `supabase/tests-publications.sql` verifica visitantes, rascunhos/agendamento, escrita direta negada, ocultação de autores e proteção de perfis/relatórios/arquivos, além de editor desativado. Fixtures sintéticas em transação revertida. Conteúdo publicado pode ser copiado por visitantes; arquivar não elimina cópias externas.

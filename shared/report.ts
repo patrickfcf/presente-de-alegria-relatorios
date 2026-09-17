@@ -1,3 +1,4 @@
+import type { PublicationDetails } from "./publications.ts";
 export type AttendanceInput = {
   volunteer_id: string;
   status: "present" | "absent";
@@ -175,11 +176,7 @@ export function normalizeReport(f: ReportInput): ReportInput {
   };
 }
 export type Role =
-  | "coordinator"
-  | "director"
-  | "admin"
-  | "volunteer"
-  | "communications";
+  "coordinator" | "director" | "admin" | "volunteer" | "communications";
 export type Profile = {
   id: string;
   display_name: string;
@@ -228,6 +225,7 @@ export type Report = Omit<ReportInput, "accepted"> & {
   file_labels: string[];
 };
 export type News = {
+  details?: PublicationDetails;
   id: string;
   title: string;
   body: string;
@@ -235,6 +233,7 @@ export type News = {
   status: "draft" | "published" | "archived";
 };
 export type Event = {
+  details?: PublicationDetails;
   id: string;
   title: string;
   description: string;
@@ -255,3 +254,5 @@ export type Attendance = AttendanceInput & {
   volunteer_name: string;
   clown_name: string;
 };
+
+export type Campaign = News & { ends_at: string | null };

@@ -38,3 +38,7 @@ O histórico guarda nomes da instituição, célula, coordenador e voluntários 
 Código por e-mail evita senhas esquecidas e links abertos no navegador errado. Não há cadastro público. SMTP e template com `{{ .Token }}` são obrigatórios para operação real.
 
 O PWA guarda apenas o shell público no cache. Nome/CPF/assinatura/anexos/chamada não entram no rascunho local; data, horários e quantidades expiram em sete dias e são removidos ao sair. Entrar, consultar dados e enviar exigem conexão. Não há fila automática de envios offline.
+
+## Publicações públicas (17/09/2026)
+
+`news`, `events` e `campaigns` têm RLS para visitantes e grants limitados às colunas editoriais, sem identificadores de autores. Um cliente Supabase anônimo separado carrega as abas públicas sem depender da sessão privada. Escrita permanece na função admin, validando perfil ativo e papel Comunicação/admin. `shared/publications.ts` valida campos complementares e links HTTPS. Não há gateway de pagamentos.

@@ -8,7 +8,8 @@ export function Install() {
   const [installed, setInstalled] = useState(
     window.matchMedia("(display-mode: standalone)").matches,
   );
-  const production = import.meta.env.VITE_PRODUCTION_URL as string | undefined;
+  const configuredUrl = import.meta.env.VITE_PRODUCTION_URL as string | undefined;
+  const production = !configuredUrl || configuredUrl.replace(/\/$/, "") === "https://presentedealegria-app.pages.dev" ? "https://presentedealegria.app" : configuredUrl;
   useEffect(() => {
     const listener = () => setPrompt(getInstallPrompt());
     const done = () => {

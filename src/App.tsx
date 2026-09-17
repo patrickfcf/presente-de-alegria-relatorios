@@ -8,6 +8,7 @@ import {
 } from "react";
 import type { Session } from "@supabase/supabase-js";
 import type {
+  Campaign,
   Attendance,
   Cell,
   Event,
@@ -26,6 +27,7 @@ import { LogoutDialog } from "./components/LogoutDialog";
 import { Entry } from "./components/Entry";
 import { Home } from "./components/Home";
 import { EventsFeed, NewsFeed } from "./components/Feed";
+import { PublicFeed } from "./components/PublicFeed";
 import "./App.css";
 const ReportForm = lazy(() =>
   import("./components/ReportForm").then((m) => ({ default: m.ReportForm })),
@@ -61,6 +63,7 @@ const EMPTY = {
   news: [] as News[],
   events: [] as Event[],
   attendance: [] as Attendance[],
+  campaigns: [] as Campaign[],
 };
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -121,6 +124,7 @@ export default function App() {
         news,
         events,
         attendance,
+        campaigns,
       ] = await Promise.all([
         rows<Cell>("cells"),
         rows<Institution>("institutions"),
@@ -131,6 +135,7 @@ export default function App() {
         rows<News>("news", "published_at"),
         rows<Event>("events", "starts_at"),
         rows<Attendance>("report_attendance", "report_id"),
+        rows<Campaign>("campaigns", "published_at"),
       ]);
       if (version === request.current) {
         setProfile(p as Profile);
@@ -144,6 +149,7 @@ export default function App() {
           news,
           events,
           attendance,
+          campaigns,
         });
       }
     } catch (e) {
@@ -245,8 +251,9 @@ export default function App() {
           </p>
           <p>
             Coordenadores acessam os relatórios das células autorizadas; a
-            diretoria acompanha os relatórios da ONG. Notícias e eventos são
-            internos.
+            diretoria acompanha os relatórios da ONG. Notícias, eventos e
+            campanhas de ajuda publicados são públicos. Dados das células e
+            documentos continuam restritos.
           </p>
           <p>
             Rascunhos locais guardam apenas data, horários e quantidades por até
@@ -268,6 +275,8 @@ export default function App() {
         <p>O aplicativo ainda não está configurado para receber relatórios.</p>
       </div>
     );
+  else if (["/eventos", "/noticias", "/ajudas", "/calendario"].includes(route))
+    content = <PublicFeed key={route} route={route} />;
   else if (!authReady || loading)
     content = (
       <div className="loading" role="status">
@@ -288,12 +297,6 @@ export default function App() {
           Um espaço para a sua célula, os nossos encontros e tudo que acontece
           na ONG.
         </p>
-        {route === "/eventos" || route === "/noticias" ? (
-          <p className="notice">
-            Entre para acompanhar{" "}
-            {route === "/eventos" ? "os eventos" : "as notícias"} da ONG.
-          </p>
-        ) : null}
         <Entry />
       </>
     );
@@ -497,25 +500,20 @@ export default function App() {
       </footer>
       {route !== "/relatorios/novo" && (
         <nav className="bottom-nav" aria-label="Menu principal">
-          {(profile?.role === "communications"
-            ? ([
-                { path: "/publicacoes", title: "Publicações", icon: "news" },
-                { path: "/eventos", title: "Eventos", icon: "calendar" },
-              ] as const)
-            : isVolunteer
-              ? ([
-                  { path: "/eventos", title: "Eventos", icon: "heart" },
-                  {
-                    path: "/calendario",
-                    title: "Calendário",
-                    icon: "calendar",
-                  },
-                ] as const)
-              : ([
-                  { path: "/", title: "Minha célula", icon: "home" },
-                  { path: "/eventos", title: "Eventos", icon: "calendar" },
-                  { path: "/noticias", title: "Notícias", icon: "news" },
-                ] as const)
+          {(
+            [
+              {
+                path: profile?.role === "communications" ? "/publicacoes" : "/",
+                title:
+                  profile?.role === "communications"
+                    ? "Publicações"
+                    : "Minha célula",
+                icon: "home",
+              },
+              { path: "/eventos", title: "Eventos", icon: "calendar" },
+              { path: "/noticias", title: "Notícias", icon: "news" },
+              { path: "/ajudas", title: "Ajudas", icon: "heart" },
+            ] as const
           ).map((item) => (
             <button
               key={item.path}

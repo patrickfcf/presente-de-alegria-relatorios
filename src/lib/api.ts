@@ -81,3 +81,42 @@ export function downloadBlob(blob: Blob, name: string) {
 export async function downloadFile(path: string, name: string) {
   downloadBlob(await reportBlob(path), name);
 }
+
+// Public feeds always use an anonymous client, independent of private account loading.
+const publicClient = configured
+  ? createClient(url!, key!, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+        storageKey: "pda-public",
+      },
+    })
+  : null;
+export async function publicRows<T>(
+  table: "news" | "events" | "campaigns",
+): Promise<T[]> {
+  if (!publicClient) throw new Error("Aplicativo não configurado.");
+  const columns =
+    table === "events"
+      ? "id,title,description,location,starts_at,ends_at,status,details"
+      : "id,title,body,published_at,status,details" +
+        (table === "campaigns" ? ",ends_at" : "");
+  const result: T[] = [];
+  for (let offset = 0; ; offset += 100) {
+    const { data, error } = await publicClient
+      .from(table)
+      .select(columns)
+      .order(table === "events" ? "starts_at" : "published_at", {
+        ascending: table === "events",
+      })
+      .order("id")
+      .range(offset, offset + 99);
+    if (error)
+      throw new Error(
+        "Não foi possível carregar as publicações. Verifique sua conexão e tente novamente.",
+      );
+    result.push(...(data as unknown as T[]));
+    if (data.length < 100) return result;
+  }
+}

@@ -7,8 +7,8 @@ Todos os perfis representam voluntários; o perfil controla responsabilidades e 
 | Administrador | Cria/edita os outros quatro perfis; reenvia acesso; exclui acesso; vincula responsáveis e células | Todas as células, downloads e indicadores | Controle administrativo completo |
 | Diretor | Cria/edita seus coordenadores; consulta voluntários; substitui coordenador por voluntário da própria equipe | Consulta geral, pendências e comparações | Apenas leitura das publicações disponíveis |
 | Coordenador | Cria/edita/desativa e reenvia acesso de seus voluntários | Envia e consulta relatórios das células autorizadas; registra presença | Apenas leitura |
-| Voluntário individual | Próprio perfil, sem edição de permissões | Sem acesso | Eventos e calendário |
-| Comunicação e Eventos | Sem gestão de pessoas | Sem acesso a documentos, CPF ou assinatura | Cria/edita/publica/arquiva notícias e eventos |
+| Voluntário individual | Próprio perfil, sem edição de permissões | Sem acesso | Eventos, calendário, notícias e ajudas públicas |
+| Comunicação e Eventos | Sem gestão de pessoas | Sem acesso a documentos, CPF ou assinatura | Cria/edita/publica/arquiva notícias, eventos e ajudas |
 
 Escolher uma opção na tela inicial não altera o perfil. A permissão é sempre consultada no banco.
 
@@ -49,3 +49,15 @@ A Comunicação abre **Publicações**. Notícias têm título, texto e data; ev
 A ONG deve definir contato de privacidade, prazo de retenção e procedimento de correção/descarte antes da operação. O aplicativo não apaga relatórios automaticamente. Downloads em aparelhos ficam sob responsabilidade de quem os baixou. Não use aparelhos compartilhados sem sair da conta.
 
 Revisar usuários inativos regularmente; guardar exportações privadas com acesso restrito; testar restauração de backup conforme o plano contratado. Não habilitar planos pagos sem decisão explícita da ONG. Não compartilhar relatórios, CPFs, assinaturas ou exportações no GitHub.
+
+## Publicações públicas e Ajudas
+
+Eventos, Notícias, Calendário e Ajudas estão disponíveis sem login. O acesso a Minha célula, relatórios e gestão continua autenticado. A Comunicação e administradores são os únicos editores. Uma publicação marcada como publicada requer confirmação explícita de divulgação pública, inclusive contatos e informações de Pix.
+
+- Notícias: categoria, resumo, texto e data/hora de publicação, com contato/link opcional.
+- Eventos: categoria (encontro, beneficente, ação pontual ou formação), resumo, descrição, início/fim, local, contato público e link de inscrição. Calendário acessível pela aba Eventos.
+- Ajudas: categoria (doação, Pix, arrecadação, rifa ou bingo), finalidade, orientações, publicação/prazo, contato e link oficial. Pix exige chave e nome do favorecido. Prefira chave aleatória ou CNPJ autorizado da ONG.
+
+Use a prévia e confira os destinos dos links. Só URLs HTTPS sem credenciais são aceitas. Notícias e Ajudas futuras só ficam públicas na data indicada; eventos publicados aparecem imediatamente. Campanhas encerradas ficam no histórico mediante filtro e não exibem botões de participação ou Pix. Arquivar remove a publicação do feed.
+
+O aplicativo apenas divulga campanhas; não processa pagamentos, confirma doações, vende números ou executa sorteios. Em rifas/bingos, o responsável deve fornecer regras, condições e contato, e conferir a adequação da ação antes de publicar. Não crie campanhas ou chaves de exemplo na produção.

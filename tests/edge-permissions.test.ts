@@ -73,6 +73,7 @@ it.each(["director", "coordinator", "volunteer"])(
       title: "Notícia de teste",
       body: "Texto de teste",
       status: "published",
+      public_confirmed: true,
       published_at: "2026-01-01T12:00:00Z",
     });
     expect(result.status).toBe(403);
@@ -87,6 +88,7 @@ it("communications can publish events but cannot create accounts", async () => {
     description: "Descrição",
     location: "Sede",
     status: "published",
+    public_confirmed: true,
     starts_at: "2026-10-01T12:00:00Z",
   });
   expect(published.status).toBe(200);
@@ -115,4 +117,56 @@ it("coordinators cannot manufacture a privileged profile", async () => {
   });
   expect(result.status).toBe(403);
   expect(state.createUser).not.toHaveBeenCalled();
+});
+
+it.each(["director", "coordinator", "volunteer"])(
+  "%s cannot publish campaigns",
+  async (role) => {
+    state.role = role;
+    const result = await call({
+      action: "save-campaign",
+      title: "Campanha teste",
+      body: "Ajude",
+      status: "published",
+      public_confirmed: true,
+      published_at: "2026-01-01T12:00:00Z",
+      details: { contact_name: "Equipe", contact_url: "https://example.org" },
+    });
+    expect(result.status).toBe(403);
+    expect(state.written).not.toHaveBeenCalled();
+  },
+);
+it("requires public confirmation and validates Pix beneficiary", async () => {
+  state.role = "communications";
+  const body = {
+    action: "save-campaign",
+    title: "Campanha teste",
+    body: "Ajude",
+    status: "published",
+    published_at: "2026-01-01T12:00:00Z",
+  };
+  expect((await call(body)).status).toBe(400);
+  expect(
+    (
+      await call({
+        ...body,
+        public_confirmed: true,
+        details: { pix_key: "synthetic-key" },
+      })
+    ).status,
+  ).toBe(400);
+  expect(state.written).not.toHaveBeenCalled();
+  expect(
+    (
+      await call({
+        ...body,
+        public_confirmed: true,
+        details: {
+          pix_key: "synthetic-key",
+          pix_beneficiary: "ONG teste",
+          category: "Pix",
+        },
+      })
+    ).status,
+  ).toBe(200);
 });

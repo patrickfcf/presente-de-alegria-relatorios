@@ -1055,3 +1055,44 @@ dialog::backdrop {
 [hidden] {
   display: none !important;
 }
+
+.publication-tag {
+  display: inline-block;
+  background: #f2ebff;
+  color: #4b249f;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 650;
+  margin-bottom: 12px;
+}
+.publication-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+.publication-links a {
+  text-decoration: none;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.pix-box {
+  background: #faf7ff;
+  border: 1px solid #e7dbff;
+  padding: 20px;
+  border-radius: 16px;
+  margin-top: 20px;
+}
+.bottom-nav button {
+  min-width: 0;
+  flex: 1;
+  max-width: 150px;
+  padding-inline: 4px;
+}
+.publication-preview {
+  border: 2px dashed #c8b5ef;
+  padding: 18px;
+  border-radius: 16px;
+  margin-block: 18px;
+}

@@ -14,8 +14,8 @@
 
 PWA para relatórios mensais de visita, equipes, notícias e eventos da ONG Presente de Alegria.
 
-**Estado: implementação e testes automatizados concluídos; ativação de produção pendente.**
-O banco e as funções foram implantados no Supabase. Faltam conectar Cloudflare Pages, configurar e testar e-mail de acesso, provisionar o primeiro administrador e cadastrar as células oficiais. Não coletar dados reais antes do teste de aceite descrito em `docs/deployment.md`.
+**Site publicado: [presentedealegria.app](https://presentedealegria.app). Ativação dos acessos privados pendente.**
+O banco e as funções foram implantados no Supabase. Faltam configurar e testar e-mail de acesso, provisionar o primeiro administrador e cadastrar as células oficiais. Não coletar dados reais antes do teste de aceite descrito em `docs/deployment.md`.
 
 ## Executar
 
@@ -46,7 +46,7 @@ npm run build
 - Assinatura na tela OU até três PDFs/JPGs/PNGs assinados em papel.
 - PDF gerado no servidor, armazenado com os originais em bucket privado; download individual e ZIP mensal.
 - Painel de pendências e comparação de células; filtros por mês, célula, coordenador e situação.
-- Notícias e eventos publicados pela Comunicação; voluntários têm eventos e calendário.
+- Eventos, Notícias e Ajudas públicos, sem login; publicação restrita à Comunicação e administradores. Calendário mensal, contatos e links oficiais; campanhas com prazo e Pix opcional.
 - Manifest, ícones oficiais, Apple touch icon, service worker, instruções de instalação e QR da URL configurada.
 
 ## Arquitetura
@@ -103,3 +103,7 @@ Logo original da ONG: https://presentedealegria.org.br/wp-content/uploads/2023/0
 O PDF inclui um subconjunto latino da fonte Noto Sans, SIL OFL 1.1, com licença em `licenses/NotoSans-OFL.txt`. A fonte é usada apenas no servidor; a interface usa fontes do sistema.
 
 O código e a documentação originais são distribuídos sob a [licença MIT](LICENSE). A licença não concede direitos sobre o nome, logotipo ou marcas da ONG. Assets de terceiros preservam suas próprias licenças; veja [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Publicações abertas
+
+Eventos, Notícias, Ajudas e Calendário não exigem conta. Minha célula e a gestão de publicações exigem login. Rascunhos, arquivados e notícias/campanhas agendadas não são expostos. Contatos publicados são públicos: a equipe confirma a divulgação antes de salvar. Ajudas divulga campanhas e canais oficiais, sem processar pagamentos, vender números ou realizar sorteios.

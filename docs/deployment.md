@@ -5,7 +5,7 @@
 - GitHub: https://github.com/patrickfcf/presentedealegria-app
 - Supabase: projeto **Presente de Alegria**, referência `rzlopgtfuutnuceaoroh`, São Paulo, organização Patrick Fonseca.
 - SQL e Edge Functions `admin` e `submit-report` implantados; testes de RLS em transação revertida executados.
-- Cloudflare Pages: **ainda não conectado**. O navegador de trabalho foi bloqueado pela verificação anti-bot do dashboard. Nenhum plano pago habilitado.
+- Cloudflare Pages conectado ao GitHub; produção em https://presentedealegria.app (domínio configurado pelo responsável). Nenhum plano pago habilitado.
 
 ## Cloudflare Pages com GitHub
 
@@ -20,7 +20,7 @@
 |---|---|
 | `VITE_SUPABASE_URL` | `https://rzlopgtfuutnuceaoroh.supabase.co` |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | Copiar a chave **Publishable** em Supabase → Settings → API Keys |
-| `VITE_PRODUCTION_URL` | URL HTTPS final exibida pelo Pages, sem caminho/hash |
+| `VITE_PRODUCTION_URL` | `https://presentedealegria.app` |
 
 A chave Publishable pode estar no frontend; **nunca usar Secret ou service_role**. Não copiar senhas/tokens para conversas, README ou GitHub.
 
@@ -61,7 +61,7 @@ from auth.users where lower(email)=lower('EMAIL DO ADMINISTRADOR');
 
 Somente administradores técnicos. Autenticar Supabase CLI localmente sem colar tokens no chat. Conferir os comandos com `supabase --help`, vincular ao projeto e conferir a lista de migrations antes de `db push`.
 
-As cinco migrations já foram aplicadas. Os nomes e timestamps dos arquivos foram alinhados ao histórico remoto e conferidos em 17/09/2026. Antes de futuras atualizações, conferir `supabase migration list` no projeto vinculado. **Não reaplicar o esquema inicial sobre o banco existente.**
+As migrations da fundação e de publicações públicas já foram aplicadas. Confira nomes e timestamps com o histórico remoto antes de novas aplicações. Antes de futuras atualizações, conferir `supabase migration list` no projeto vinculado. **Não reaplicar o esquema inicial sobre o banco existente.**
 
 Deploy das funções inclui arquivos `shared/`, `_shared/http.ts` e import map `supabase/functions/deno.json`. O fontkit e as fontes do PDF são dependências somente do servidor. Segredos são disponibilizados pelo Supabase, nunca por variáveis VITE.
 

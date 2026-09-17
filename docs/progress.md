@@ -26,11 +26,15 @@
 
 ## Ainda pendente
 
-1. Cloudflare Pages: navegador bloqueado em verificação anti-bot persistente. Não há site de produção publicado.
+1. Cloudflare Pages publicado pelo responsável; domínio `presentedealegria.app` conectado.
 2. Configuração de Auth/SMTP/template OTP e primeiro administrador; teste real de entrega do e-mail.
 3. Lista oficial de células/instituições e cadastro da equipe.
-4. URL final em `VITE_PRODUCTION_URL`, QR e URLs de Auth.
+4. URL canônica `https://presentedealegria.app` no QR; atualizar configuração de URLs de Auth na ativação.
 5. Aceite completo online, visual em tamanhos de telefone/desktop e instalação em iOS/Android. O navegador disponível não abre localhost; testes de componentes não substituem essa verificação.
 6. Retenção e contato de privacidade definidos pela ONG.
 
 Nenhum CPF real, assinatura real ou relatório de produção foi incluído no repositório. Dados dos testes SQL foram revertidos. Nenhuma pessoa foi convidada nem serviço pago habilitado.
+
+## Evolução das publicações
+
+Eventos, Notícias e Ajudas públicos; editor com categorias, resumo, contato, ação, prévia e confirmação pública. Campanhas com prazo, histórico e Pix com favorecido. Permissões SQL conferidas em transação revertida; suite de aplicação ampliada. Teste autenticado de publicação ainda depende do primeiro administrador/SMTP.
