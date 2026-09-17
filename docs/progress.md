@@ -42,3 +42,7 @@ Eventos, Notícias e Ajudas públicos; editor com categorias, resumo, contato, a
 ## Filtros e descoberta pública
 
 Ordenação por primeira publicação nos eventos, busca/categoria/mês, opções cronológicas e estados sem resultados. Páginas públicas com URLs próprias, metadados sociais, sitemap, robots e página Sobre com participação/apoio. Configuração de Auth ainda pendente no painel: o print mostrou template padrão Magic Link e redirect localhost; template OTP e Site URL corretos estão documentados. Administrador inicial e três eventos/uma campanha já foram cadastrados; não versionar seus dados pessoais.
+
+## Atualização de acesso por e-mail
+
+O responsável confirmou a Site URL de produção e apresentou um e-mail recebido com OTP após configurar SMTP. Entrega do código confirmada; conclusão do login ainda depende de teste. O template `supabase/templates/magic-link.html` recebeu logo oficial, cores da marca, estrutura em tabelas, estilos inline e código selecionável compatível com 6–8 dígitos. A nova identidade visual está preparada no repositório e deve ser copiada para Magic Link no painel; não foi aplicada automaticamente nem testada em clientes de e-mail reais.
