@@ -112,7 +112,7 @@ export function AdminDashboard({
   }
   return (
     <>
-      <div className="eyebrow">ÁREA DA DIRETORIA</div>
+      <div className="eyebrow">ÁREA DA LIDERANÇA</div>
       <h1>Visão dos encontros</h1>
       <p className="intro">Acompanhe os envios e o alcance das visitas.</p>
       <div className="admin-nav">

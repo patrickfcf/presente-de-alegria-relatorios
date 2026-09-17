@@ -63,9 +63,9 @@ export function Home({
         )}
       </p>
       {["admin", "director"].includes(profile.role) && (
-        <button className="director-banner" onClick={onAdmin}>
+        <button className="leadership-banner" onClick={onAdmin}>
           <span>
-            <strong>Área da diretoria</strong>
+            <strong>Área da liderança de segmento</strong>
             <small>Relatórios e equipes</small>
           </span>
           <Icon name="arrow" />
@@ -86,7 +86,7 @@ export function Home({
               ? "Obrigado por registrar esse encontro! Os relatórios estão no seu histórico."
               : mainCell
                 ? "Depois da visita, reserve alguns minutos para registrar o atendimento."
-                : "A diretoria ainda precisa vincular uma célula ao seu cadastro."}
+                : "A liderança de segmento ainda precisa vincular uma célula ao seu cadastro."}
           </p>
           {mainCell && (
             <button className="primary" onClick={onCreate}>
@@ -101,7 +101,7 @@ export function Home({
         </section>
       )}
       {profile.role === "coordinator" && (
-        <a className="director-banner" href="#/cadastros">
+        <a className="leadership-banner" href="#/cadastros">
           <span>
             <strong>Minha equipe</strong>
             <small>Cadastrar e gerenciar voluntários</small>

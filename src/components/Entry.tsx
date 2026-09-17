@@ -3,7 +3,7 @@ import { Login } from "./Login";
 import { Icon } from "./Icon";
 const choices = [
   ["communications", "Equipe de Comunicação e Eventos"],
-  ["director", "Diretor de célula"],
+  ["director", "Líder de segmento"],
   ["coordinator", "Coordenador de célula"],
   ["volunteer", "Voluntário individual"],
 ] as const;

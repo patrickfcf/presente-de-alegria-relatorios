@@ -43,7 +43,10 @@ export function ReportDetail({
             <br />
             com sucesso!
           </h1>
-          <p>O documento foi arquivado e já está disponível para a diretoria.</p>
+          <p>
+            O documento foi arquivado e já está disponível para a liderança de
+            segmento.
+          </p>
         </div>
       )}
       <div className="card">
