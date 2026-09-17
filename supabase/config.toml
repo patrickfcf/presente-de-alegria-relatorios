@@ -1,0 +1,7 @@
+project_id = "presente-de-alegria-relatorios"
+[auth]
+enable_signup = false
+[functions.submit-report]
+verify_jwt = true
+[functions.admin]
+verify_jwt = true
